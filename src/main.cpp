@@ -1,4 +1,8 @@
-//
-// Created by blockost on 09/03/16.
-//
+#include <iostream>
 
+using namespace std;
+
+int main() {
+
+    cout << "lala";
+}
