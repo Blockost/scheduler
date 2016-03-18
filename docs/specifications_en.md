@@ -1,4 +1,4 @@
-# Specification
+# Specifications
 
 ## Table of contents
 * Introduction
