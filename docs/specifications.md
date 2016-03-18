@@ -9,16 +9,22 @@
 
 ## Introduction
 ### Définition du sujet
-Dans le cadre du Projet GSI de seconde année d'ingénieur, nous réaliserons un _scheduler_ permettant d'ordonnancer 
-différents processus selon plusieurs stratégies.
+**Déf wikipédia !**
+
 ### Objectif
-L'objectif sera pour nous de réaliser ce projet avec rigueur, du code commenté et documenté. Nous essaierons de développer
-une application rapide et efficace, avec le plus de fonctionalités supplémentaires possibles.
+Dans le cadre du Projet GSI de seconde année d'ingénieur, nous réaliserons un _scheduler_ permettant d'ordonnancer 
+différents processus selon une ou plusieurs stratégies prédéfinies.
 
 ## Specs
 Comme expliqué par le client, le but du projet est de récuperer une file d'attente avec de multiples tâches à rediriger.
-La redirection doit se faire en fonction de la taille de la tâche.
+La redirection doit se faire en fonction de la taille de la tâche ==> Ressource = Temps OU **Utilisation processeur** ou mémoire ?
+
 Toutes ces tâches se verront attribuer une partie d'un core de CPU afin de l'effectuer.
+
+* Stratégie d'ordonnancement
+* Dans un travail, on spécifie la taille processeur qu'il faudra allouer (0.5 CPU, 0.2CPU, etc...)
+
+
 
 ## How to implement
 Pour implémenter ce _scheduler_, nous utiliserons le C++, avec les librairies OpenMP et MPI. Les connections réseau
