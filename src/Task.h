@@ -11,6 +11,9 @@ using namespace boost::posix_time;
 
 class Task {
 
+public:
+    Task(){ };
+
 private:
     std::string name;
     time_duration duration;

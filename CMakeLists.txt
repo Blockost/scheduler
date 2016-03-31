@@ -14,6 +14,7 @@ link_directories(${Boost_INCLUDE_DIRS})
 find_package(OpenMP REQUIRED)
 
 # Add source files to exec
+set(SOURCE_FILES src/main.cpp src/Task.h include/json/jsoncpp.cpp)
 set(SOURCE_FILES src/main.cpp src/Task.h src/basicScheduler.cpp src/basicScheduler.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
