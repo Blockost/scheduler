@@ -2,6 +2,8 @@
 
 # IntelliJ project files
 .idea
+docs/html
+docs/latex
 out
 gen
 
