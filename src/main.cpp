@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
-
+#include <fstream>
+#include <json/json.h>
+#include <bits/stl_list.h>
 
 #include "Task.h"
 
@@ -35,4 +37,25 @@ int main() {
      *
      *      Enhancements : /!\ Competition /!\ - Load-Balancing
      */
+
+    Json::Value root;
+    Json::Reader reader;
+
+
+    Json::Value task;
+    std::ifstream people_file("TESTNAME.json", std::ifstream::binary);
+    people_file >> task;
+
+    cout<<task<< endl; //This will print the entire json object.
+
+
+    Json::Value::const_iterator iterator1;
+
+    for(iterator1 = task.begin(); iterator1 != task.end(); iterator1++)
+    {
+        cout << task[iterator1.name()]["name"] << " --- ";
+        cout << task[iterator1.name()]["duration"] << endl;
+    }
+
+
 }

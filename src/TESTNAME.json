@@ -1,0 +1,21 @@
+{
+  "0" :{
+    "name":"TASK1",
+    "duration":500
+    },
+
+  "1":{
+    "name":"TASK2",
+    "duration":10
+  },
+
+  "2":{
+    "name":"TASK3",
+    "duration":78
+  },
+
+  "3": {
+    "name":"TASK4",
+    "duration":78942
+  }
+}
