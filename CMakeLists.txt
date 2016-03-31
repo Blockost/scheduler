@@ -14,8 +14,27 @@ link_directories(${Boost_INCLUDE_DIRS})
 find_package(OpenMP REQUIRED)
 
 # Add source files to exec
-set(SOURCE_FILES src/main.cpp src/Task.h)
+set(SOURCE_FILES src/main.cpp src/Task.h src/basicScheduler.cpp src/basicScheduler.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+#Let's find Doxygen
+find_package(Doxygen)
+
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_INPUT Doxyfile)
+    set(DOXYGEN_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+    add_custom_command(
+            OUTPUT ${DOXYGEN_OUTPUT}
+            COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation..."
+            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
+            COMMAND ${CMAKE_COMMAND} -E echo "Done."
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            DEPENDS ${DOXYGEN_INPUT}
+    )
+
+    add_custom_target(apidoc ALL DEPENDS ${DOXYGEN_OUTPUT})
+endif(DOXYGEN_FOUND)
 
 # Link libraries to exec
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})

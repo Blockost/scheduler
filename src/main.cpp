@@ -1,18 +1,16 @@
 #include <iostream>
 #include <vector>
 
-
 #include "Task.h"
 
 using namespace std;
-
 int main() {
 
     vector<Task> pool;
 
-    pool.push_back(Task("éééé", 500));
-    pool.push_back(Task("lala", 500));
-    pool.push_back(Task("toto", 100));
+    pool.push_back(Task("Task1", new time_duration(0,2,3,4)));
+    pool.push_back(Task("Task2", new time_duration(0,2,0,5)));
+    pool.push_back(Task("Task3", new time_duration(0,0,3,100)));
 
     //#pragma omp parallel
     {
@@ -24,15 +22,5 @@ int main() {
         }
     }
 
-    /*
-     * Generate a task pool
-     * For each thread worker (basically, one per processor)
-     *      Fetch a task in the pool (also remove it from the pool)
-     *      execute the task
-     *      wait until a task is available
-     ******
-     * When the pool is empty, stop the program
-     *
-     *      Enhancements : /!\ Competition /!\ - Load-Balancing
-     */
 }
+
