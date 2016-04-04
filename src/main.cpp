@@ -5,18 +5,79 @@
 #include <bits/stl_list.h>
 
 #include "Task.h"
+#include "boost/program_options.hpp"
+#include "flags.h"
+
 
 using namespace std;
+namespace po = boost::program_options;
 
-int main() {
+void func(void){
+    cout << "Func called !";
+}
 
-    vector<Task> pool;
+int main(int argc, char** argv) {
+
+    string filename = "tasks.json";
+    po::options_description desc("Options");
+    po::variables_map vm;
+
+    // Define all available options
+    desc.add_options()
+            ("help,h", "Print this help message")
+            ("include-file,i", po::value<string>(), "Specify the file to include. If not specified, it will be parsed the file \"tasks.json\""
+                    "at the executable's location")
+            ("seq,s", "Launch the scheduler in sequential mode")
+            ("parallel,p", "Launch the scheduler in parallel mode")
+            ("distrib,d", "Launch the scheduler in distributed mode");
+            //("foo", po::value<std::string>()->implicit_value("")->zero_tokens()->notifier(&func),"foo description");
+
+    try{
+
+        // Parse options in cmd line
+        po::store(po::parse_command_line(argc, argv, desc),vm);
+
+        /* Help option */
+        if(vm.count("help")) {
+            cout << desc;
+        }
+        if(vm.count(",f")) {
+            vm.notify();
+        }
+        /*if(vm.count("i")){ cout << "specified file : " << vm["i"].as() << endl;
+        }*/
+
+
+    // If the option is unrecognised...
+    }catch (po::error &e){
+        cerr << e.what() << endl;
+        return ERROR_IN_CMD_LINE;
+    }
+
+
+
+
+    string json_example = "{\"array\": \
+                            [\"item1\", \
+                            \"item2\"], \
+                            \"not an array\": \
+                            \"asdf\" \
+                         }";
+
+    /*Json::Value root;
+    Json::Reader reader;
+
+    bool parseSuccess = reader.parse(json_example, root, false);*/
+
+
+
+    /*vector<Task> pool;
 
     pool.push_back(Task("éééé", 500));
     pool.push_back(Task("lala", 500));
     pool.push_back(Task("toto", 100));
 
-    //#pragma omp parallel
+    #pragma omp parallel
     {
         // Code inside this region runs in parallel.
         cout << "Hello\n";
@@ -24,7 +85,9 @@ int main() {
         for(Task& task : pool){
             task.execute();
         }
-    }
+    }*/
+
+
 
     /*
      * Generate a task pool
