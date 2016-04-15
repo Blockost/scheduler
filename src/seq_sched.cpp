@@ -129,6 +129,14 @@ void launch_sequential(const char* filename) {
                     print_process_sent(pid, core);
                     break;
             }
+        }else{
+            sort(process_list.begin(),process_list.end(),less_than_key());
+            for (unsigned j = 0; j < process_list.size(); ++j) {
+                cout << "Process handled : "
+                << process_list.at(j).duration
+                << " | " <<  process_list.at(j).load << "  |  prio :" <<  process_list.at(j).priority
+                << endl;
+            }
         }
     }
 }
