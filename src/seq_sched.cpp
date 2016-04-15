@@ -5,13 +5,13 @@ void print_process_handled(task _task, int core) {
     cout << "Process handled : "
     << _task.duration << "s"
     << " for " << _task.load << "CPU"
-    << " by " << termcolor::green << "PID " << getpid()
+    << " by " << termcolor::green << "PID " << getpid() << termcolor::reset
     << " on " << termcolor::red << "core" << core
     << termcolor::reset << endl;
 }
 
 void print_process_sent(int pid, int core) {
-    cout << "Process delivered to PID " << pid
+    cout << "Process delivered to " << termcolor::green << " PID " << pid << termcolor::reset
     << " on " << termcolor::red << "core" << core
     << termcolor::reset << endl;
 }
@@ -41,13 +41,13 @@ float get_core_load(const vector<task> process_list, int num_cpu){
 int get_core_to_assign(const vector<task> process_list){
     int core;
 
-    cout << "cpu0: " << get_core_load(process_list, 0)
-    << "; cpu1: " << get_core_load(process_list, 1)
-    << "; cpu2: " << get_core_load(process_list, 2)
-    << "; cpu3: " << get_core_load(process_list, 3)
+    cout << "CPU0: " << get_core_load(process_list, 0)
+    << "; CPU1: " << get_core_load(process_list, 1)
+    << "; CPU2: " << get_core_load(process_list, 2)
+    << "; CPU3: " << get_core_load(process_list, 3)
     << endl;
 
-    cout << termcolor::red << "Searching for an auloaded core..." << endl;
+    cout << termcolor::red << "Searching for an auloaded core..." << termcolor::reset << endl;
     core = get_unloaded_core(process_list);
     if(core == -1){
         cout << "Not found !" << endl;
