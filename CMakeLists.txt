@@ -14,7 +14,7 @@ link_directories(${Boost_INCLUDE_DIRS})
 find_package(OpenMP REQUIRED)
 
 # Add source files to exec
-set(SOURCE_FILES src/main.cpp src/Task.h src/flags.h include/json/jsoncpp.cpp src/seq_sched.cpp src/seq_sched.h src/parallel_sched.cpp src/parallel_sched.h src/main.h src/server.cpp src/server.h)
+set(SOURCE_FILES src/main.cpp src/flags.h include/json/jsoncpp.cpp src/seq_sched.cpp src/seq_sched.h src/parallel_sched.cpp src/parallel_sched.h src/main.h src/server.cpp src/server.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 #Let's find Doxygen

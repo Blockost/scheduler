@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     Json::Reader reader;
     Json::Value tasks;
 
-    vector<Task> pool;
+    vector<task> pool;
 
     string filename = "tasks.json";
 

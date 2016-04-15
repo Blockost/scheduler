@@ -33,6 +33,8 @@ void start_server(const char* prg_name){
             cin >> task.duration;
             cout << "Process load : ";
             cin >> task.load;
+            cout << "Process priority : ";
+            cin >> task.priority;
             msgsnd(q_id, &task, 100, 0);
         }
 
