@@ -2,7 +2,6 @@
 #include "boost/program_options.hpp"
 
 #include "main.h"
-#include "server.h"
 #include "seq_sched.h"
 #include "parallel_sched.h"
 
@@ -14,12 +13,14 @@ int main(int argc, char** argv) {
     po::options_description desc("Options");
     po::variables_map vm;
 
+    const char* filename = ".file";
+
     // Define all available options
     desc.add_options()
             ("help,h", "Print this help message")
             ("server", "Start the server to populate the queue")
-            ("include-file,i", po::value<string>(), "Specify the file to include. If not specified, it will be parsed \"tasks.json\""
-                    " at the executable's location")
+            ("include-file,i", po::value<string>(), "Specify the file to include. If not specified, it will be parsed the hidden file \".file\" "
+                    "at the executable's location")
             ("sequential,s", "Launch the scheduler in sequential mode")
             ("parallel,p", "Launch the scheduler in parallel mode")
             ("distrib,d", "Launch the scheduler in distributed mode");
@@ -42,12 +43,12 @@ int main(int argc, char** argv) {
 
         /* Launch sched in sequential mode */
         if(vm.count("sequential")){
-            launch_sequential(argv[0]);
+            launch_sequential(filename);
         }
 
         /* Launch the server */
         if(vm.count("server")){
-            start_server(argv[0]);
+            start_server(filename);
         }
 
         if(vm.count("paralel")){

@@ -5,6 +5,6 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-void start_server(const char* prg_name);
+void start_server(const char* filename);
 
 #endif //PROJETGSI_SERVER_H

@@ -1,8 +1,8 @@
 #include <boost/lexical_cast.hpp>
 #include "server.h"
 
-void start_server(const char* prg_name){
-    key_t key = ftok(prg_name, 0);
+void start_server(const char* filename){
+    key_t key = ftok(filename, 0);
     int q_id = msgget(key, 0);
 
 

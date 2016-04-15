@@ -4,13 +4,8 @@
 #include <iostream>
 #include "termcolor/termcolor.hpp"
 #include <vector>
-#include "Task.h"
 #include "flags.h"
-
-#include <json/json.h>
 #include "boost/program_options.hpp"
-#include "seq_sched.h"
-#include "parallel_sched.h"
 #include "server.h"
 
 using namespace std;

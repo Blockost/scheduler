@@ -1,5 +1,4 @@
 #include "seq_sched.h"
-#include <boost/interprocess/managed_shared_memory.hpp>
 
 
 void print_process_handled(task _task, int core) {
@@ -61,7 +60,7 @@ int get_core_to_assign(const vector<task> process_list){
 //process_list.erase(remove(process_list.begin(), process_list.end(), _task), process_list.end());
 
 
-void launch_sequential(const char* prog_name) {
+void launch_sequential(const char* filename) {
 
     //using namespace boost::interprocess;
 
@@ -91,7 +90,7 @@ void launch_sequential(const char* prog_name) {
     cout << "Launching scheduler in sequential mode..." << endl;
 
     vector<task> process_list;
-    int q_id = msgget(ftok(prog_name, 0), 0);
+    int q_id = msgget(ftok(filename, 0), 0);
     pid_t pid;
     int core;
     cpu_set_t set;
@@ -111,13 +110,6 @@ void launch_sequential(const char* prog_name) {
             _task.num_cpu = core;
             process_list.push_back(_task);
 
-            cout << "Vector juste avant de créer le fils et d'exécuter le code" << endl;
-            for(auto const &process : process_list){
-                cout << process << endl;
-            }
-
-
-
             pid = fork();
             switch(pid) {
 
@@ -128,7 +120,6 @@ void launch_sequential(const char* prog_name) {
                         exit(ERROR_SCHED_AFFINITY);
                     }
                     sleep(_task.duration);
-                    kill(getppid(), SIGUSR1);
                     print_process_handled(_task, core);
                     break;
 
@@ -141,18 +132,3 @@ void launch_sequential(const char* prog_name) {
         }
     }
 }
-
-/*
-                   if(find(process_list.begin(), process_list.end(), _task) != process_list.end()){
-                       cout << "vector avant suppression" << endl;
-                       for(auto const &process : process_list){
-                           cout << termcolor::green << process << termcolor::reset << endl;
-                       }
-                       process_list.erase(find(process_list.begin(), process_list.end(), _task));
-                       cout << "vector après suppression" << endl;
-                       for(auto const &process : process_list){
-                           cout << termcolor::green << process << termcolor::reset << endl;
-                       }
-                   }else{
-                       cout << termcolor::yellow << "C'EST DE LA MERDE!" << termcolor::reset << endl;
-                   }*/
