@@ -7,6 +7,12 @@
 #include "Task.h"
 #include "flags.h"
 
+#include <json/json.h>
+#include "boost/program_options.hpp"
+#include "seq_sched.h"
+#include "parallel_sched.h"
+#include "server.h"
+
 using namespace std;
 
 struct task {
@@ -32,6 +38,18 @@ struct task {
                << "}"
                << endl;
     }
+    unsigned priority =0;
 };
+
+
+struct less_than_key
+{
+    inline bool operator() (const task& struct1, const task& struct2)
+    {
+        return (struct1.priority < struct2.priority);
+    }
+};
+
+
 
 #endif
