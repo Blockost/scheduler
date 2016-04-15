@@ -1,3 +1,4 @@
+#include <boost/lexical_cast.hpp>
 #include "server.h"
 
 void start_server(const char* prg_name){

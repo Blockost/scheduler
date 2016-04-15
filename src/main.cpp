@@ -1,6 +1,10 @@
 #include <fstream>
+#include "boost/program_options.hpp"
+
 #include "main.h"
-#include "flags.h"
+#include "server.h"
+#include "seq_sched.h"
+#include "parallel_sched.h"
 
 
 namespace po = boost::program_options;
@@ -9,14 +13,6 @@ int main(int argc, char** argv) {
 
     po::options_description desc("Options");
     po::variables_map vm;
-
-    Json::Value root;
-    Json::Reader reader;
-    Json::Value tasks;
-
-    vector<Task> pool;
-
-    string filename = "tasks.json";
 
     // Define all available options
     desc.add_options()
@@ -49,7 +45,7 @@ int main(int argc, char** argv) {
             launch_sequential(argv[0]);
         }
 
-        /* Lauch the server */
+        /* Launch the server */
         if(vm.count("server")){
             start_server(argv[0]);
         }
