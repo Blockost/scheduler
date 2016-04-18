@@ -1,5 +1,7 @@
 #include "parallel_sched.h"
 
+using namespace std;
+
 void launch_parallel(void){
 
     cout << "Launching scheduler in parallel mode..." << endl;

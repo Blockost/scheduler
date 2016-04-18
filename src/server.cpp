@@ -1,6 +1,9 @@
 #include <boost/lexical_cast.hpp>
 #include "server.h"
 
+using namespace std;
+//TODO Renommer le fichier ?
+
 void start_server(const char* filename){
     key_t key = ftok(filename, 0);
     int q_id = msgget(key, 0);
@@ -30,6 +33,7 @@ void start_server(const char* filename){
         if(choice == "1"){
             cout << "--- Sending a new processus to the queue ---" << endl;
             task task;
+            // TODO Bloquer les entrées incohérentes !
             cout << "Process duration : ";
             cin >> task.duration;
             cout << "Process load : ";

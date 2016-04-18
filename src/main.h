@@ -8,8 +8,6 @@
 #include "boost/program_options.hpp"
 #include "server.h"
 
-using namespace std;
-
 struct task {
     long mtype = 1;
     unsigned int duration = 0;
@@ -23,7 +21,7 @@ struct task {
     }
 
 
-    friend ostream &operator<<(ostream &out, const task &_task) {
+    friend std::ostream &operator<<(std::ostream &out, const task &_task) {
         return out << "{"
                << _task.duration
                << "; "
@@ -31,7 +29,7 @@ struct task {
                << "; "
                << _task.num_cpu
                << "}"
-               << endl;
+               << std::endl;
     }
     unsigned priority =0;
 };
