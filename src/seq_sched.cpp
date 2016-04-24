@@ -1,8 +1,5 @@
 #include "seq_sched.h"
-
-
-
-
+#include <boost/interprocess/sync/named_mutex.hpp>
 
 void print_process_handled(task _task, int core) {
     std::cout << "Process handled : "
@@ -19,86 +16,117 @@ void print_process_sent(int pid, int core) {
     << termcolor::reset << std::endl;
 }
 
-int get_unloaded_core(const int cores_load[4]){
-    for(int i = 0; i < 4; ++i)
+void print_cores_load(const float cores_load[4]){
+    for(unsigned i = 0; i < 4; ++i) {
+        std::cout << "cpu" << i << ": "
+            << cores_load[i] << "; ";
+    }
+    std::cout << std::endl;
+}
+
+int get_unloaded_core(const float cores_load[4]){
+    for(unsigned i = 0; i < 4; ++i)
         if(cores_load[i] == 0) return i;
     return -1;
 }
 
-void get_cores_load(const VectorTasks &process_list, int* cores_load){
+int get_less_loaded_core(const float cores_load[4]){
+    float min = 0;
+    for(unsigned i = 0; i < 4; ++i)
+        if(cores_load[i] < min) min = i;
+    return min;
+}
+
+bool exist_suitable_core(const float cores_load[4], float task_load){
+    for(unsigned i = 0; i < 4; ++i)
+        if(cores_load[i] + task_load <= 1.0) return true;
+    return false;
+}
+
+void get_cores_load(const VectorTasks &process_list, float* cores_load){
     for(auto const &process : process_list)
         cores_load[process.num_cpu] += process.load;
 }
 
-int get_core_to_assign(const VectorTasks &process_list){
+int get_core_to_assign(const VectorTasks &process_list, float task_load){
     int core = 0;
-    int cores_load[4] = {0,0,0,0};
+    float cores_load[4] = {0,0,0,0};
 
-    get_cores_load(process_list, cores_load);
-    std::cout << "cpu0: " << cores_load[0]
-    << "; cpu1: " << cores_load[1]
-    << "; cpu2: " << cores_load[2]
-    << "; cpu3: " << cores_load[3]
-    << std::endl;
+    do{
+        get_cores_load(process_list, cores_load);
+        print_cores_load(cores_load);
+        //TODO Sleep(1) ?
+    }while(!exist_suitable_core(cores_load, task_load));
+
 
     /* Strategy : in "readme.md" */
     std::cout << termcolor::red << "Searching for an unloaded core..." << std::endl;
     core = get_unloaded_core(cores_load);
     if(core == -1){
         std::cout << "Not found !" << std::endl;
-        std::cout << termcolor::green << "Searching for a core that can fit the task... //TODO" << termcolor::reset << std::endl;
-        //TODO Take the (strategy ?) core which best fits the process' hosting procedure
-        core = 0;
+        std::cout << termcolor::green << "Searching for a core that can fit the task..." << termcolor::reset << std::endl;
+        core = get_less_loaded_core(cores_load);
     }
-
     return core;
 }
 
-// TODO A voir si on ne devrait pas garder les process dans la liste et ajouter un champs "done" à la structure plutôt !
-//process_list.erase(remove(process_list.begin(), process_list.end(), _task), process_list.end());
 
-
-void launch_sequential(const char* filename){
+void launch_sequential(){
 
     std::cout << "Launching scheduler in sequential mode..." << std::endl;
 
-    // Delete if exists
-    shared_memory_object::remove("MySharedMemory");
-
-    ///Create a new segment with given name and size
-    managed_shared_memory segment(create_only, "MySharedMemory", 65536);
-
-    //Initialize shared memory STL-compatible allocator
-    const ShmemAllocator alloc_inst (segment.get_segment_manager());
-
-    //Construct a vector named "VectorTasks" in shared memory with argument alloc_inst
-    VectorTasks *process_list = segment.construct<VectorTasks>("VectorTasks")(alloc_inst);
-
-
-
-    int q_id = msgget(ftok(filename, 0), 0);
     pid_t pid;
     int core;
     cpu_set_t set;
     task task_res;
 
+    /* Shared memory building */
+    // Delete if exists
+    shared_memory_object::remove("MySharedMemory");
+    // Create a new segment with given name and size
+    managed_shared_memory segment(create_only, "MySharedMemory", 65536);
+    // Initialize shared memory STL-compatible allocator
+    const ShmemAllocator alloc_inst (segment.get_segment_manager());
+    // Construct a vector named "VectorTasks" in shared memory using the previous allocator
+    VectorTasks *process_list = segment.construct<VectorTasks>("VectorTasks")(alloc_inst);
 
+    /* Mutex creation */
+    // Delete if exists
+    named_mutex::remove("VectorTasks_mutex");
+    // Create the named mutex
+    named_mutex mutex(create_only, "VectorTasks_mutex");
+
+
+    message_queue queue(open_or_create, "scheduler_queue", 1000, sizeof(task));
+
+    unsigned int priority;
+    message_queue::size_type rcv_size;
 
 
     while(1){
-        if(msgrcv(q_id, &task_res, 100, 1, 0) != -1) {
+        if(queue.try_receive(&task_res, 100, rcv_size, priority)) {
             CPU_ZERO(&set);
 
             // Create a new task with the specs received from the message queue
             task _task = task_res;
-            std::cout << termcolor::blue << termcolor::on_white << "------------------------------------"
+            std::cout << termcolor::blue << termcolor::on_white
+                << "------------------------------------"
                 << termcolor::reset << std::endl;
             std::cout << "New task arrived :" << _task << std::endl;
 
             // Choose the cpu
-            core = get_core_to_assign(*process_list);
+            core = get_core_to_assign(*process_list, _task.load);
             CPU_SET(core, &set);
             _task.num_cpu = core;
+
+            // Define a scope
+            {
+                // Try to lock the mutex
+                scoped_lock<named_mutex> lock(mutex);
+                // Add the task to the list of processes
+                process_list->push_back(_task);
+                // Mutex will be unlocked at the end of the scope, no matter what happens
+            }
 
             // Create a new process which will host the task execution
             pid = fork();
@@ -112,27 +140,25 @@ void launch_sequential(const char* filename){
                                 << termcolor::reset << std::endl;
                             exit(ERROR_SCHED_AFFINITY);
                         }else{
+                            // Simulate the time taken by the processus
+                            //TODO Ajouter une méthod exec() dans la tâche à la place du sleep() ?
+                            sleep(_task.duration);
+
                             //Open the managed segment
                             managed_shared_memory segment(open_only, "MySharedMemory");
 
                             //Find the vector using the c-string name
                             VectorTasks *process_list = segment.find<VectorTasks>("VectorTasks").first;
 
-                            // Add the task to the list of processes
-                            process_list->push_back(_task);
-
-                            // Simulate the time taken by the processus
-                            //TODO Ajouter une méthod exec() dans la tâche à la place du sleep() ?
-                            sleep(_task.duration);
-
-                            // Remove it from the list
-                            process_list->erase(std::remove(process_list->begin(), process_list->end(), _task), process_list->end());
+                            {
+                                scoped_lock<named_mutex> lock(mutex);
+                                // Remove it from the list
+                                process_list->erase(std::remove(process_list->begin(), process_list->end(), _task), process_list->end());
+                            }
 
                             // Tell how good was that ephemeral life...
                             print_process_handled(_task, core);
                         }
-
-
                     }
                     break;
 
@@ -143,16 +169,5 @@ void launch_sequential(const char* filename){
                     break;
             }
         }
-
-        //TODO Regarder ce que ça fait !!
-        /*else{
-            sort(process_list.begin(),process_list.end(),less_than_key());
-            for (unsigned j = 0; j < process_list.size(); ++j) {
-                std::cout << "Process handled : "
-                << process_list.at(j).duration
-                << " | " <<  process_list.at(j).load << "  |  prio :" <<  process_list.at(j).priority
-                << std::endl;
-            }
-        }*/
     }
 }

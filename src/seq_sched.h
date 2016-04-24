@@ -18,9 +18,12 @@ typedef vector<task, ShmemAllocator> VectorTasks;
 
 void print_process_handled(task, int);
 void print_process_sent(int, int);
-int get_unloaded_core(const int[]);
-void get_cores_load(const VectorTasks&, int*);
-int get_core_to_assign(const VectorTasks&);
-void launch_sequential(const char*);
+void print_cores_load(const float[]);
+int get_unloaded_core(const float[]);
+int get_less_loaded_core(const float[]);
+bool exist_suitable_core(const float[], float);
+void get_cores_load(const VectorTasks&, float*);
+int get_core_to_assign(const VectorTasks&, float);
+void launch_sequential(void);
 
 #endif

@@ -26,10 +26,11 @@ Par exemple, 0.1CPU, 0.25CPU, 0.9CPU
         -- OU --
         Supprimer l'une des tâches suivant une strat' particulière
     SINON
-        SI un processeur est libre (pas de tâches en cours)
+        SI un processeur est vide (pas de tâches en cours)
             lui attribuer automatiquement la tâche.
-        SININ
-            Attribuer la tache au processeur le moins utilisé
+        SINON
+            Récupérer le processeur le moins utilisé
+            Lui assigner la tâche
         FINSI
     FINSI
             
