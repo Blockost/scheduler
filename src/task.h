@@ -7,7 +7,6 @@ struct task {
     int num_cpu = -1;
     unsigned priority = 0;
 
-
     friend bool operator==(const task &left, const task &right){
         return left.duration == right.duration &&
                left.load == right.load &&

@@ -54,16 +54,16 @@ int get_core_to_assign(const VectorTasks &process_list, float task_load){
 
     do{
         get_cores_load(process_list, cores_load);
-        print_cores_load(cores_load);
+        //print_cores_load(cores_load);
         //TODO Sleep(1) ?
     }while(!exist_suitable_core(cores_load, task_load));
 
 
     /* Strategy : in "readme.md" */
-    std::cout << termcolor::red << "Searching for an unloaded core..." << std::endl;
+    std::cout << termcolor::red << "Searching for an unloaded core..." << termcolor::reset << std::endl;
     core = get_unloaded_core(cores_load);
     if(core == -1){
-        std::cout << "Not found !" << std::endl;
+        std::cout << termcolor::red << "Not found !" << termcolor::reset << std::endl;
         std::cout << termcolor::green << "Searching for a core that can fit the task..." << termcolor::reset << std::endl;
         core = get_less_loaded_core(cores_load);
     }
@@ -140,9 +140,19 @@ void launch_sequential(){
                                 << termcolor::reset << std::endl;
                             exit(ERROR_SCHED_AFFINITY);
                         }else{
-                            // Simulate the time taken by the processus
-                            //TODO Ajouter une méthod exec() dans la tâche à la place du sleep() ?
-                            sleep(_task.duration);
+                            // TODO: replace with command passed by the user
+                            std::string command = "ls -lA /home/hugo/Shared-Data/ING2/Projet\\ GSI/ProjetGSI";
+
+                            // Executing the task, reading stdout et stderr and redirecting to output
+                            redi::ipstream proc(command, redi::pstreams::pstderr);
+                            std::string line;
+                            // TODO: check termcolor : doesn't work here !
+                            while (std::getline(proc.out(), line)) {
+                                std::cout << termcolor::blue << line << termcolor::reset << std::endl;
+                            }
+                            while (std::getline(proc.err(), line)) {
+                                std::cout << termcolor::red << line << termcolor::reset << std::endl;
+                            }
 
                             //Open the managed segment
                             managed_shared_memory segment(open_only, "MySharedMemory");
