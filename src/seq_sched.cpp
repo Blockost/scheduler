@@ -144,14 +144,10 @@ void launch_sequential(){
                             std::string command = "ls -lA /home/hugo/Shared-Data/ING2/Projet\\ GSI/ProjetGSI";
 
                             // Executing the task, reading stdout et stderr and redirecting to output
-                            redi::ipstream proc(command, redi::pstreams::pstderr);
-                            std::string line;
-                            // TODO: check termcolor : doesn't work here !
-                            while (std::getline(proc.out(), line)) {
-                                std::cout << termcolor::blue << line << termcolor::reset << std::endl;
-                            }
-                            while (std::getline(proc.err(), line)) {
-                                std::cout << termcolor::red << line << termcolor::reset << std::endl;
+                            int pid2 = fork();
+                            if (pid2 == 0) {
+                                std::cout << termcolor::blue << termcolor::on_white << "Résultat de la commande `" << command << "`" << termcolor::reset << std::endl;
+                                std::system(command.c_str());
                             }
 
                             //Open the managed segment
