@@ -105,7 +105,7 @@ void launch_sequential(){
 
 
     while(1){
-        if(queue.try_receive(&task_res, 100, rcv_size, priority)) {
+        if(queue.try_receive(&task_res, sizeof(task), rcv_size, priority)) {
             CPU_ZERO(&set);
 
             // Create a new task with the specs received from the message queue
@@ -138,8 +138,7 @@ void launch_sequential(){
                         << termcolor::reset << std::endl;
                         exit(ERROR_SCHED_AFFINITY);
                     }else{
-                        // TODO: replace with command passed by the user
-                        std::string command = "sleep 5 && echo 'coucou'";
+                        std::string command = task_res.command;
 
                         // Executing the task, and a watchdog to kill if timeout
                         pid_t exec = fork();
@@ -152,7 +151,6 @@ void launch_sequential(){
                         } else {
                             sleep(_task.duration);
                             int status;
-                            // TODO
                             pid_t result = waitpid(exec, &status, WNOHANG);
                             if (result == 0) {
                                 // Kill process if timeout
