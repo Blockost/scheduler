@@ -10,7 +10,6 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
-#include "../include/pstreams-0.8.1/pstream.h"
 
 using namespace boost::interprocess;
 

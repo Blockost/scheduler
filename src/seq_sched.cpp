@@ -1,5 +1,6 @@
 #include "seq_sched.h"
 #include <boost/interprocess/sync/named_mutex.hpp>
+#include <sys/wait.h>
 
 void print_process_handled(task _task, int core) {
     std::cout << "Process handled : "
@@ -130,30 +131,38 @@ void launch_sequential(){
 
             // Create a new process which will host the task execution
             pid = fork();
-            switch(pid) {
+            if (pid == 0) {
+                {
+                    if (sched_setaffinity(getpid(), sizeof(set), &set) == -1) {
+                        std::cout << termcolor::red << termcolor::on_white << "SET_AFFINITY_ERROR"
+                        << termcolor::reset << std::endl;
+                        exit(ERROR_SCHED_AFFINITY);
+                    }else{
+                        // TODO: replace with command passed by the user
+                        std::string command = "sleep 5 && echo 'coucou'";
 
-                // Child's exec
-                case 0:
-                    {
-                        if (sched_setaffinity(getpid(), sizeof(set), &set) == -1) {
-                            std::cout << termcolor::red << termcolor::on_white << "SET_AFFINITY_ERROR"
-                                << termcolor::reset << std::endl;
-                            exit(ERROR_SCHED_AFFINITY);
-                        }else{
-                            // TODO: replace with command passed by the user
-                            std::string command = "ls -lA /home/hugo/Shared-Data/ING2/Projet\\ GSI/ProjetGSI";
-
-                            // Executing the task, reading stdout et stderr and redirecting to output
-                            int pid2 = fork();
-                            if (pid2 == 0) {
-                                std::cout << termcolor::blue << termcolor::on_white << "Résultat de la commande `" << command << "`" << termcolor::reset << std::endl;
-                                std::system(command.c_str());
+                        // Executing the task, and a watchdog to kill if timeout
+                        pid_t exec = fork();
+                        if (exec == 0) {
+                            setpgid(getpid(), getpid());
+                            std::system(command.c_str());
+                            // Tell how good was that ephemeral life...
+                            print_process_handled(_task, core);
+                            exit(EXIT_SUCCESS);
+                        } else {
+                            sleep(_task.duration);
+                            int status;
+                            // TODO
+                            pid_t result = waitpid(exec, &status, WNOHANG);
+                            if (result == 0) {
+                                // Kill process if timeout
+                                kill(-exec, SIGTERM);
+                                std::cout << termcolor::red << "Process " << exec << " killed after " << _task.duration << "s of execution" << termcolor::reset << std::endl;
                             }
-
                             //Open the managed segment
                             managed_shared_memory segment(open_only, "MySharedMemory");
 
-                            //Find the vector using the c-string name
+                            // Find the vector using the c-string name
                             VectorTasks *process_list = segment.find<VectorTasks>("VectorTasks").first;
 
                             {
@@ -161,18 +170,13 @@ void launch_sequential(){
                                 // Remove it from the list
                                 process_list->erase(std::remove(process_list->begin(), process_list->end(), _task), process_list->end());
                             }
-
-                            // Tell how good was that ephemeral life...
-                            print_process_handled(_task, core);
                         }
                     }
-                    break;
-
-                // Parent's exec
-                default:
-                    // Tell where the process has been dispatched
-                    print_process_sent(pid, core);
-                    break;
+                }
+                exit(EXIT_SUCCESS);
+            } else {
+                // Tell where the process has been dispatched
+                print_process_sent(pid, core);
             }
         }
     }
