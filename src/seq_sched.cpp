@@ -4,7 +4,8 @@
 
 void print_process_handled(task _task, int core) {
     std::cout << "Process handled : "
-    << _task.duration << "s"
+    // TODO: process isn't handled anymmore in 'timeout' seconds : get real time
+    << _task.timeout << "s"
     << " for " << _task.load << "CPU"
     << " by " << termcolor::green << "PID " << getpid() << termcolor::reset
     << " on " << termcolor::red << "core" << core
@@ -149,13 +150,13 @@ void launch_sequential(){
                             print_process_handled(_task, core);
                             exit(EXIT_SUCCESS);
                         } else {
-                            sleep(_task.duration);
+                            sleep(_task.timeout);
                             int status;
                             pid_t result = waitpid(exec, &status, WNOHANG);
                             if (result == 0) {
                                 // Kill process if timeout
                                 kill(-exec, SIGTERM);
-                                std::cout << termcolor::red << "Process " << exec << " killed after " << _task.duration << "s of execution" << termcolor::reset << std::endl;
+                                std::cout << termcolor::red << "Process " << exec << " killed after " << _task.timeout << "s of execution" << termcolor::reset << std::endl;
                             }
                             //Open the managed segment
                             managed_shared_memory segment(open_only, "MySharedMemory");

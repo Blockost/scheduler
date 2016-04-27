@@ -8,13 +8,13 @@ message_queue queue(open_or_create, "scheduler_queue", 1000, sizeof(task));
 void send_one_process(){
     unsigned u_duration, u_priority;
     float f_load;
-    std::string duration, load, priority,command,tmp;
+    std::string duration, load, priority, command, tmp;
 
-    cout << "--- Sending a new processus to the queue ---" << endl;
-    cout << "command :";
-    getline(cin,tmp); // need for flushing
-    getline(cin,command);
-    cout << "Process duration (>= 0): ";
+    cout << "--- Sending a new process to the queue ---" << endl;
+    cout << "Process command to execute (bash): $ ";
+    getline(cin, tmp); // need for flushing
+    getline(cin, command);
+    cout << "Process timeout (>= 0): ";
     cin >> duration;
     cout << "Process load (0 <= load <= 1): ";
     cin >> load;
@@ -32,7 +32,7 @@ void send_one_process(){
 
         // If cast was successful
         task _task;
-        _task.duration = u_duration;
+        _task.timeout = u_duration;
         _task.load = f_load;
         _task.priority = u_priority;
         strncpy(_task.command, command.c_str(), 255);
@@ -55,7 +55,7 @@ void send_several_processes(unsigned nb_processes){
     char array[255] = "ls -l";
     for(unsigned i = 0; i < nb_processes; ++i){
         task _task;
-        _task.duration = rand()%11;
+        _task.timeout = rand() % 11;
         _task.load = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         _task.priority = round(rand()%2+1);
         strncpy(_task.command, array, 255);
