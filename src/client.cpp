@@ -11,7 +11,7 @@ void send_one_process(){
     std::string duration, load, priority, command, tmp;
 
     cout << "--- Sending a new process to the queue ---" << endl;
-    cout << "Process command to execute (bash): $ ";
+    cout << "Command to execute (bash): $ ";
     getline(cin, tmp); // need for flushing
     getline(cin, command);
     cout << "Process timeout (>= 0): ";
@@ -52,7 +52,7 @@ void send_one_process(){
 
 void send_several_processes(unsigned nb_processes){
     srand(time(NULL));
-    char array[255] = "ls -l";
+    char array[255] = "echo \"This is a command \"";
     for(unsigned i = 0; i < nb_processes; ++i){
         task _task;
         _task.timeout = rand() % 11;
@@ -60,8 +60,11 @@ void send_several_processes(unsigned nb_processes){
         _task.priority = round(rand()%2+1);
         strncpy(_task.command, array, 255);
         cout << "created : " << _task << endl;
-        queue.send(&_task, sizeof(task), _task.priority);
-        cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << endl;
+        if(queue.try_send(&_task, sizeof(task), _task.priority)){
+            cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << endl;
+        }else{
+            cout << termcolor::red << "Task not send... Queue is full !" << termcolor::reset << endl;
+        }
     }
 }
 

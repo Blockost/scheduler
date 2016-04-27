@@ -8,6 +8,7 @@
 
 namespace po = boost::program_options;
 
+// TODO COMMENCER A FAIRE LE RAPPORT :D
 int main(int argc, char** argv) {
 
     po::options_description desc("Options");
@@ -42,8 +43,6 @@ int main(int argc, char** argv) {
         if(vm.count("client")){
             start_client();
         }
-
-        //TODO Add logs to keep track of the scheduler's behaviour
 
         /* Launch sched in sequential mode */
         if(vm.count("sequential")){

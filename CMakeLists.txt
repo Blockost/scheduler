@@ -14,7 +14,7 @@ link_directories(${Boost_INCLUDE_DIRS})
 find_package(OpenMP REQUIRED)
 
 # Add source files to exec
-set(SOURCE_FILES src/main.cpp src/flags.h include/termcolor/termcolor.hpp src/seq_sched.cpp src/seq_sched.h src/parallel_sched.cpp src/parallel_sched.h src/main.h src/client.cpp src/client.h src/task.h)
+set(SOURCE_FILES src/main.cpp src/flags.h include/termcolor/termcolor.hpp src/seq_sched.cpp src/seq_sched.h src/parallel_sched.cpp src/parallel_sched.h src/main.h src/client.cpp src/client.h src/task.h src/util/util.cpp src/util/util.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 # Link libraries to exec

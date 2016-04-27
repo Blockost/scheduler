@@ -11,7 +11,7 @@ CdC -> 21/03/2016 23h59
 
 ## Populating 
 
-User --server as argument on ProjetGSI executable to start the server. It will populate the queue with your tasks
+Use -c or --client as argument on ProjetGSI executable to start the client. It will populate the queue with your tasks
 
 ## Scheduling
 
@@ -23,8 +23,6 @@ Par exemple, 0.1CPU, 0.25CPU, 0.9CPU
 
     SI aucun processeur ne peut contenir la tache
         Attendre qu'un processeur se libère
-        -- OU --
-        Supprimer l'une des tâches suivant une strat' particulière
     SINON
         SI un processeur est vide (pas de tâches en cours)
             lui attribuer automatiquement la tâche.
@@ -33,7 +31,10 @@ Par exemple, 0.1CPU, 0.25CPU, 0.9CPU
             Lui assigner la tâche
         FINSI
     FINSI
-            
+    
+    SI l'une des taĉhes dépassent le temps défini par l'utilisateur
+        Arrêter la tâche
+    FINSI
             
 ### Parallel - Single Machine (OpenMP)
 
