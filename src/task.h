@@ -6,11 +6,13 @@ struct task {
     float load = 0;
     int num_cpu = -1;
     unsigned priority = 0;
+    char command[255];
 
     friend bool operator==(const task &left, const task &right){
         return left.duration == right.duration &&
                left.load == right.load &&
-               left.num_cpu == right.num_cpu;
+               left.num_cpu == right.num_cpu &&
+               left.command == right.command;
     }
 
 
@@ -23,6 +25,8 @@ struct task {
                << "priority: " << _task.priority
                << "; "
                << "cpu: " << _task.num_cpu
+                             << "; "
+                             << "command: " << _task.command
                << "}";
     }
 

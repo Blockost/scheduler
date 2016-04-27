@@ -104,7 +104,7 @@ void launch_sequential(){
 
 
     while(1){
-        if(queue.try_receive(&task_res, 100, rcv_size, priority)) {
+        if(queue.try_receive(&task_res, sizeof(task), rcv_size, priority)) {
             CPU_ZERO(&set);
 
             // Create a new task with the specs received from the message queue
@@ -141,29 +141,29 @@ void launch_sequential(){
                             exit(ERROR_SCHED_AFFINITY);
                         }else{
                             // TODO: replace with command passed by the user
-                            std::string command = "ls -lA /home/hugo/Shared-Data/ING2/Projet\\ GSI/ProjetGSI";
+                            std::string command = task_res.command;
 
                             // Executing the task, reading stdout et stderr and redirecting to output
                             int pid2 = fork();
                             if (pid2 == 0) {
                                 std::cout << termcolor::blue << termcolor::on_white << "Résultat de la commande `" << command << "`" << termcolor::reset << std::endl;
                                 std::system(command.c_str());
+                            } else {
+                                //Open the managed segment
+                                managed_shared_memory segment(open_only, "MySharedMemory");
+
+                                //Find the vector using the c-string name
+                                VectorTasks *process_list = segment.find<VectorTasks>("VectorTasks").first;
+
+                                {
+                                    scoped_lock<named_mutex> lock(mutex);
+                                    // Remove it from the list
+                                    process_list->erase(std::remove(process_list->begin(), process_list->end(), _task), process_list->end());
+                                }
+
+                                // Tell how good was that ephemeral life...
+                                print_process_handled(_task, core);
                             }
-
-                            //Open the managed segment
-                            managed_shared_memory segment(open_only, "MySharedMemory");
-
-                            //Find the vector using the c-string name
-                            VectorTasks *process_list = segment.find<VectorTasks>("VectorTasks").first;
-
-                            {
-                                scoped_lock<named_mutex> lock(mutex);
-                                // Remove it from the list
-                                process_list->erase(std::remove(process_list->begin(), process_list->end(), _task), process_list->end());
-                            }
-
-                            // Tell how good was that ephemeral life...
-                            print_process_handled(_task, core);
                         }
                     }
                     break;

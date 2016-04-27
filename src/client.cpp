@@ -8,15 +8,20 @@ message_queue queue(open_or_create, "scheduler_queue", 1000, sizeof(task));
 void send_one_process(){
     unsigned u_duration, u_priority;
     float f_load;
-    std::string duration, load, priority;
+    std::string duration, load, priority,command,tmp;
 
     cout << "--- Sending a new processus to the queue ---" << endl;
+    cout << "command :";
+    getline(cin,tmp); // need for flushing
+    getline(cin,command);
     cout << "Process duration (>= 0): ";
     cin >> duration;
     cout << "Process load (0 <= load <= 1): ";
     cin >> load;
     cout << "Process priority (1: Low, 2: Normal, 3: High): ";
     cin >> priority;
+
+
     try{
         /* It's "verifying user inputs" time ...! */
         u_duration = boost::lexical_cast<unsigned>(duration);
@@ -30,6 +35,8 @@ void send_one_process(){
         _task.duration = u_duration;
         _task.load = f_load;
         _task.priority = u_priority;
+        strncpy(_task.command, command.c_str(), 255);
+
         try {
             // Send the message
             queue.send(&_task, sizeof(task), _task.priority);
@@ -45,11 +52,13 @@ void send_one_process(){
 
 void send_several_processes(unsigned nb_processes){
     srand(time(NULL));
+    char array[255] = "ls -l";
     for(unsigned i = 0; i < nb_processes; ++i){
         task _task;
         _task.duration = rand()%11;
         _task.load = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         _task.priority = round(rand()%2+1);
+        strncpy(_task.command, array, 255);
         cout << "created : " << _task << endl;
         queue.send(&_task, sizeof(task), _task.priority);
         cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << endl;
