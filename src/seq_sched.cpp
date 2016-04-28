@@ -101,10 +101,17 @@ void launch_sequential(){
 
     file_logs.close();
 
+    // Defining a timeout for the scheduler
+    boost::posix_time::ptime start;
+    boost::posix_time::ptime timeout = boost::posix_time::second_clock::local_time() + boost::posix_time::minutes(1);
 
-    // TODO Find a way to not make an endless loop while keeping a good UI/UX
-    while(1){
-        if(queue.try_receive(&task_res, sizeof(task), rcv_size, priority)){
+    while(boost::posix_time::second_clock::local_time() < timeout) {
+        if(queue.try_receive(&task_res, sizeof(task), rcv_size, priority)) {
+            // Reseting timeout and start time to endure task supposed duration and compute real exec duration
+            timeout = boost::posix_time::second_clock::local_time() + boost::posix_time::seconds(task_res.timeout + 60);
+            start = boost::posix_time::second_clock::local_time();
+
+            // Reseting set of CPUs for sched affinity
             CPU_ZERO(&set);
 
             // Create a new task with the specs received from the message queue
@@ -127,7 +134,7 @@ void launch_sequential(){
             // Choose the cpu
             core = get_core_to_assign(*process_list, _task.load);
             // If there's not a cpu which can handle the task...
-            while(core == -1){
+            while (core == -1) {
                 print_no_core_available();
                 /*if(file_logs){
                     ss << "No core available for the moment..." << std::endl;
@@ -154,22 +161,25 @@ void launch_sequential(){
 
             // Create a new process which will host the task execution
             pid = fork();
-            if(pid == 0){
+            if (pid == 0) {
                 if (sched_setaffinity(getpid(), sizeof(set), &set) == -1) {
                     print_set_affinity_error();
                     exit(ERROR_SCHED_AFFINITY);
-                }else{
+                } else {
                     std::string command = task_res.command;
 
                     // Executing the task, and a watchdog to kill if timeout
                     pid_t exec = fork();
 
                     // Process that contains the command
-                    if(exec == 0){
+                    if (exec == 0) {
                         setpgid(getpid(), getpid());
                         std::system(command.c_str());
+                        // Tell how good was that ephemeral life...
+                        boost::posix_time::time_duration duration = boost::posix_time::second_clock::local_time() - start;
+                        print_process_handled(_task, getppid(), core, duration.total_milliseconds());
                         exit(EXIT_SUCCESS);
-                    }else{
+                    } else {
                         sleep(_task.timeout);
                         int status;
                         pid_t result = waitpid(exec, &status, WNOHANG);
@@ -177,42 +187,37 @@ void launch_sequential(){
                         if (result == 0) {
                             // Kill the process because the timeout is exceeded
                             kill(-exec, SIGTERM);
-                            print_process_killed_timeout(exec, _task);
+                            print_process_killed_timeout(_task, getpid());
                         }
-
-                        //Open the managed segment
-                        managed_shared_memory segment(open_only, "MySharedMemory");
-
-                        // Find the vector using the c-string name
-                        VectorTasks *process_list = segment.find<VectorTasks>("VectorTasks").first;
-
-                        {
-                            scoped_lock<named_mutex> lock(mutex);
-                            // Remove it from the list
-                            process_list->erase(std::remove(process_list->begin(), process_list->end(), _task),
-                                                process_list->end());
-                        }
-
-
-                        // Tell how good was that ephemeral life...
-                        print_process_handled(_task, core);
-                        /*if(file_logs){
-                            ss << "Process handled : "
-                            << _task.timeout << "s"
-                            << " for " << _task.load << "CPU"
-                            << " by PID " << getpid()
-                            << " on core" << core << std::endl;
-                            scoped_lock<file_lock> fs_lock(f_lock);
-                            write_into_stream(file_logs, ss);
-                        }*/
-
-
                     }
+
+                    //Open the managed segment
+                    managed_shared_memory segment(open_only, "MySharedMemory");
+
+                    // Find the vector using the c-string name
+                    VectorTasks *process_list = segment.find<VectorTasks>("VectorTasks").first;
+
+                    {
+                        scoped_lock<named_mutex> lock(mutex);
+                        // Remove it from the list
+                        process_list->erase(std::remove(process_list->begin(), process_list->end(), _task),
+                                            process_list->end());
+                    }
+
+                    /*if(file_logs){
+                        ss << "Process handled : "
+                        << _task.timeout << "s"
+                        << " for " << _task.load << "CPU"
+                        << " by PID " << getpid()
+                        << " on core" << core << std::endl;
+                        scoped_lock<file_lock> fs_lock(f_lock);
+                        write_into_stream(file_logs, ss);
+                    }*/
                 }
-                // TODO Check htop -> Les processus pères restent... OMFG !
+                // TODO Check htop -> Les processus pères restent même après l'exit
                 exit(EXIT_SUCCESS);
             // Parent's exec
-            }else{
+            } else {
                 // Tell where the process has been dispatched
                 print_process_sent(pid, core);
             }

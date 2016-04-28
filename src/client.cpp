@@ -14,7 +14,7 @@ void send_one_process(){
     cout << "Command to execute (bash): $ ";
     getline(cin, tmp); // need for flushing
     getline(cin, command);
-    cout << "Process timeout (>= 0): ";
+    cout << "Process timeout (> 0): ";
     cin >> duration;
     cout << "Process load (0 <= load <= 1): ";
     cin >> load;
@@ -22,12 +22,12 @@ void send_one_process(){
     cin >> priority;
 
 
-    try{
+    try {
         /* It's "verifying user inputs" time ...! */
         u_duration = boost::lexical_cast<unsigned>(duration);
         f_load = boost::lexical_cast<float>(load);
         u_priority = boost::lexical_cast<unsigned>(priority);
-        if(f_load > 1 || (u_priority != 1 && u_priority != 2 && u_priority != 3))
+        if(u_duration == 0 || f_load > 1 || (u_priority != 1 && u_priority != 2 && u_priority != 3))
             throw boost::bad_lexical_cast();
 
         // If cast was successful
@@ -41,7 +41,7 @@ void send_one_process(){
             // Send the message
             queue.send(&_task, sizeof(task), _task.priority);
             cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << endl;
-        }catch (interprocess_exception &ex){
+        }catch (interprocess_exception &ex) {
             std::cout << ex.what() << std::endl;
         }
     }catch (boost::bad_lexical_cast e){
@@ -52,7 +52,7 @@ void send_one_process(){
 
 void send_several_processes(unsigned nb_processes){
     srand(time(NULL));
-    char array[255] = "echo \"This is a command \"";
+    char array[255] = "sleep 3 && echo \"This is a command \"";
     for(unsigned i = 0; i < nb_processes; ++i){
         task _task;
         _task.timeout = rand() % 11;
@@ -63,7 +63,7 @@ void send_several_processes(unsigned nb_processes){
         if(queue.try_send(&_task, sizeof(task), _task.priority)){
             cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << endl;
         }else{
-            cout << termcolor::red << "Task not send... Queue is full !" << termcolor::reset << endl;
+            cout << termcolor::red << "Task not sent... Queue is full !" << termcolor::reset << endl;
         }
     }
 }

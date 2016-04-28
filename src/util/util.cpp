@@ -1,7 +1,5 @@
 #include "util.h"
 
-
-
 void write_into_stream(std::basic_ostream<char>& out, std::stringstream& ss) {
     if(out){
         std::string s = ss.str();
@@ -12,12 +10,11 @@ void write_into_stream(std::basic_ostream<char>& out, std::stringstream& ss) {
 }
 
 //TODO Make writing into a stream generic : std::cout or std::fstream -> print_blabla(WRITE_INTO_FILE | WRITE_INTO_CONSOLE, ...)
-void print_process_handled(task& _task, int core) {
+void print_process_handled(task& _task, pid_t pid, int core, int mseconds) {
     std::cout << "Process handled : "
-    // TODO: process isn't handled anymmore in 'timeout' seconds : get real time
-    << _task.timeout << "s"
+    << mseconds << "ms"
     << " for " << _task.load << "CPU"
-    << " by " << termcolor::green << "PID " << getpid() << termcolor::reset
+    << " by " << termcolor::green << "PID " << pid << termcolor::reset
     << " on " << termcolor::blue << "core" << core
     << termcolor::reset << std::endl;
 }
@@ -43,8 +40,8 @@ void print_process_incoming(task& _task){
     std::cout << "New task arrived :" << _task << std::endl;
 }
 
-void print_process_killed_timeout(pid_t exec, task& _task) {
-    std::cout << termcolor::red << "Process " << exec << " killed after " <<
+void print_process_killed_timeout(task& _task, pid_t pid) {
+    std::cout << termcolor::red << "Process " << pid << " killed after " <<
     _task.timeout << "s of execution" << termcolor::reset << std::endl;
 }
 
