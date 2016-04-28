@@ -63,6 +63,15 @@ void launch_sequential(){
     unsigned int priority;
     message_queue::size_type rcv_size;
     std::stringstream ss;
+    // Sigaction variable to make sure childs are not zombified
+    struct sigaction sigchld_action;
+    sigchld_action.sa_handler = SIG_DFL;
+    sigchld_action.sa_flags = SA_NOCLDWAIT;
+    // ptime variable to timeout processes and measures exec time
+    boost::posix_time::ptime start;
+    boost::posix_time::ptime timeout;
+    using clock = boost::posix_time::second_clock;
+
 
     /* Shared memory building */
     // Delete if exists
@@ -102,14 +111,13 @@ void launch_sequential(){
     file_logs.close();
 
     // Defining a timeout for the scheduler
-    boost::posix_time::ptime start;
-    boost::posix_time::ptime timeout = boost::posix_time::second_clock::local_time() + boost::posix_time::minutes(1);
+    timeout = clock::local_time() + boost::posix_time::minutes(1);
 
-    while(boost::posix_time::second_clock::local_time() < timeout) {
+    while(clock::local_time() < timeout) {
         if(queue.try_receive(&task_res, sizeof(task), rcv_size, priority)) {
             // Reseting timeout and start time to endure task supposed duration and compute real exec duration
-            timeout = boost::posix_time::second_clock::local_time() + boost::posix_time::seconds(task_res.timeout + 60);
-            start = boost::posix_time::second_clock::local_time();
+            timeout = clock::local_time() + boost::posix_time::seconds(task_res.timeout + 60);
+            start = clock::local_time();
 
             // Reseting set of CPUs for sched affinity
             CPU_ZERO(&set);
@@ -221,6 +229,8 @@ void launch_sequential(){
                 // Tell where the process has been dispatched
                 print_process_sent(pid, core);
             }
+            // Make sure childs are not zombies
+            sigaction(SIGCHLD, &sigchld_action, NULL);
         }
     }
 }
