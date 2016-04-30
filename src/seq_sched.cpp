@@ -13,7 +13,7 @@ int get_unloaded_core(const double cores_load[4]){
 int get_less_loaded_core(const double cores_load[4]){
     int min = 0;
     for(unsigned i = 0; i < 4; ++i)
-        if(cores_load[i] < min) min = i;
+        if(cores_load[i] < cores_load[min]) min = i;
     return min;
 }
 
@@ -63,15 +63,14 @@ void launch_sequential(){
     unsigned int priority;
     message_queue::size_type rcv_size;
     std::stringstream ss;
-    // Sigaction variable to make sure childs are not zombified
+    // Sigaction variable to make sure children are not zombified
     struct sigaction sigchld_action;
     sigchld_action.sa_handler = SIG_DFL;
     sigchld_action.sa_flags = SA_NOCLDWAIT;
     // ptime variable to timeout processes and measures exec time
     boost::posix_time::ptime start;
     boost::posix_time::ptime timeout;
-    using clock = boost::posix_time::second_clock;
-
+    using clock = boost::posix_time::microsec_clock;
 
     /* Shared memory building */
     // Delete if exists
@@ -138,7 +137,6 @@ void launch_sequential(){
                 //write_into_stream(file_logs, ss);
             }*/
 
-
             // Choose the cpu
             core = get_core_to_assign(*process_list, _task.load);
             // If there's not a cpu which can handle the task...
@@ -184,7 +182,7 @@ void launch_sequential(){
                         setpgid(getpid(), getpid());
                         std::system(command.c_str());
                         // Tell how good was that ephemeral life...
-                        boost::posix_time::time_duration duration = boost::posix_time::second_clock::local_time() - start;
+                        boost::posix_time::time_duration duration = clock::local_time() - start;
                         print_process_handled(_task, getppid(), core, duration.total_milliseconds());
                         exit(EXIT_SUCCESS);
                     } else {
@@ -222,14 +220,13 @@ void launch_sequential(){
                         write_into_stream(file_logs, ss);
                     }*/
                 }
-                // TODO Check htop -> Les processus pères restent même après l'exit
                 exit(EXIT_SUCCESS);
             // Parent's exec
             } else {
                 // Tell where the process has been dispatched
                 print_process_sent(pid, core);
             }
-            // Make sure childs are not zombies
+            // Make sure children are not zombies
             sigaction(SIGCHLD, &sigchld_action, NULL);
         }
     }

@@ -55,7 +55,7 @@ void send_several_processes(unsigned nb_processes){
     char array[255] = "sleep 3 && echo \"This is a command \"";
     for(unsigned i = 0; i < nb_processes; ++i){
         task _task;
-        _task.timeout = rand() % 11;
+        _task.timeout = (rand() % 11) + 1;
         _task.load = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         _task.priority = round(rand()%2+1);
         strncpy(_task.command, array, 255);
