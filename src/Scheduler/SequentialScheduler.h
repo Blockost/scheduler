@@ -29,7 +29,7 @@ private:
 
     bool exist_suitable_core(const double[], double);
 
-    void get_cores_load(const VectorTasks &, double[]);
+    void get_cores_load(const VectorTasks &, double*);
 
     int get_core_to_assign(const VectorTasks &, double);
 

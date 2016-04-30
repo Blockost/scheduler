@@ -32,8 +32,26 @@ void print_process_sent(std::ostream &stream, int pid, int core) {
 
 void print_cores_load(std::ostream &stream, const double cores_load[4]) {
     for (unsigned i = 0; i < 4; ++i) {
-        std::cout << "cpu" << i << ": "
-        << cores_load[i] << "; ";
+        if (cores_load[i]>1)
+        {
+            std::cout << "cpu" << i << ": "
+            << cores_load[i] << "; ";
+
+            std::cout << "SUPERIEUR A 1 !!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+
+            char var=0;
+
+            //tant que l'utilisateur n'a pas taper sur entrer on continue..
+            while(var == 0)
+            {
+                std::cout << std::endl << "appuyer sur entrer pour continuer.." << std::endl;
+                std::cin >> var;
+            }
+        }else{
+            std::cout << "cpu" << i << ": "
+            << cores_load[i] << "; ";
+        }
+
     }
     std::cout << std::endl;
     for (unsigned i = 0; i < 4; ++i) {
@@ -58,8 +76,8 @@ void print_process_killed_timeout(std::ostream &stream, pid_t pid, task &_task) 
     std::cout << termcolor::red << "Process " << pid << " killed after " <<
     _task.timeout << "s of execution" << termcolor::reset << std::endl;
 
-    stream << termcolor::red << "Process " << pid << " killed after " <<
-    _task.timeout << "s of execution" << termcolor::reset << std::endl;
+    stream << "Process " << pid << " killed after " <<
+    _task.timeout << "s of execution" << std::endl;
 
 }
 

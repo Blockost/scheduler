@@ -13,25 +13,48 @@ ParallelScheduler::~ParallelScheduler() {
 }
 
 int ParallelScheduler::get_unloaded_core(const double cores_load[4]) {
-    for (unsigned i = 0; i < 4; ++i)
-        if (cores_load[i] == 0) return i;
-    return -1;
+    int tmp=-1;
+    #pragma omp parallel for shared(cores_load) reduction(min : tmp)
+    for(unsigned i = 0; i < 4; ++i)
+        if(cores_load[i] == 0) tmp=i;
+    return tmp;
 }
 
 int ParallelScheduler::get_less_loaded_core(const double cores_load[4]) {
-    int min = 0;
-    for (unsigned i = 0; i < 4; ++i)
-        if (cores_load[i] < cores_load[min]) min = i;
-    return min;
+    int index = 0;
+    double min = cores_load[0];
+
+    #pragma omp parallel shared(cores_load)
+    {
+        int index_local = index;
+        double min_local = min;
+        #pragma omp for nowait
+        for (int i = 1; i < 4; i++) {
+            if (cores_load[i] < min_local) {
+                min_local = cores_load[i];
+                index_local = i;
+            }
+        }
+        #pragma omp critical
+        {
+            if (min_local < min) {
+                min = min_local;
+                index = index_local;
+            }
+        }
+    }
+    return index;
 }
 
 bool ParallelScheduler::exist_suitable_core(const double cores_load[4], double task_load) {
-    for (unsigned i = 0; i < 4; ++i) {
-        if (cores_load[i] + task_load <= 1.0) {
-            return true;
+    bool tmp = false;
+    #pragma omp parallel for reduction(|:tmp) shared(cores_load)
+    for(unsigned i = 0; i < 4; ++i) {
+        if (cores_load[i]+task_load <= 1.0){
+            tmp=true;
         }
     }
-    return false;
+    return tmp;
 }
 
 void ParallelScheduler::get_cores_load(const VectorTasks &process_list, double cores_load[4]) {
@@ -100,7 +123,7 @@ void ParallelScheduler::start() {
     named_mutex mutex(create_only, "VectorTasks_mutex");
 
     /* Open message queue */
-    message_queue queue(open_or_create, "scheduler_queue", 1000, sizeof(task));
+    message_queue queue(open_or_create, queue_name.c_str(), 1000, sizeof(task));
 
     file_lock f_lock(filename.c_str());
 

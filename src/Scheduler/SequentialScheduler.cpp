@@ -34,7 +34,7 @@ bool SequentialScheduler::exist_suitable_core(const double cores_load[4], double
     return false;
 }
 
-void SequentialScheduler::get_cores_load(const VectorTasks &process_list, double cores_load[4]) {
+void SequentialScheduler::get_cores_load(const VectorTasks &process_list, double* cores_load) {
     for (auto const &process : process_list)
         cores_load[process.num_cpu] += process.load;
 }
