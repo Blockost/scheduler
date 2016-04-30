@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
             launch_sequential();
         }
 
-        if(vm.count("paralel")){
+        if(vm.count("parallel")){
             launch_parallel();
         }
 

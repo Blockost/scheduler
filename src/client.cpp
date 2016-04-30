@@ -57,7 +57,7 @@ void send_several_processes(unsigned nb_processes){
         task _task;
         _task.timeout = (rand() % 11) + 1;
         _task.load = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        _task.priority = round(rand()%2+1);
+        _task.priority = round(rand()%3+1); // génère une priorité entre 1 et 3.
         strncpy(_task.command, array, 255);
         cout << "created : " << _task << endl;
         if(queue.try_send(&_task, sizeof(task), _task.priority)){

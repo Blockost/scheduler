@@ -4,6 +4,8 @@
 #include "util/util.h"
 #include <sys/wait.h>
 
+using namespace boost::interprocess;
+
 int get_unloaded_core(const double cores_load[4]){
     for(unsigned i = 0; i < 4; ++i)
         if(cores_load[i] == 0) return i;

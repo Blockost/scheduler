@@ -11,10 +11,9 @@
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 
-using namespace boost::interprocess;
 
-typedef allocator<task, managed_shared_memory::segment_manager>  ShmemAllocator;
-typedef vector<task, ShmemAllocator> VectorTasks;
+typedef boost::interprocess::allocator<task, boost::interprocess::managed_shared_memory::segment_manager>  ShmemAllocator;
+typedef boost::interprocess::vector<task, ShmemAllocator> VectorTasks;
 
 int get_unloaded_core(const double[]);
 int get_less_loaded_core(const double[]);
