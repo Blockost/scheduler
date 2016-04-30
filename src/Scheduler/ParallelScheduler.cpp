@@ -1,82 +1,68 @@
-#include "parallel_sched.h"
+#include <iostream>
+#include "ParallelScheduler.h"
 
-
-
-using namespace std;
 using namespace boost::interprocess;
 
-/*double start_time = omp_get_wtime();
+ParallelScheduler::ParallelScheduler(std::string queue_name, std::string filename) :
+        Scheduler(filename), filename{filename}, queue_name{queue_name} {
 
-    //Execute tasks
-    #pragma omp parallel
-    #pragma omp single
-    {
-        for(auto it = pool.begin(); it != pool.end(); ++it){
-            #pragma omp task firstprivate(it)
-            it->execute();
-        }
-        #pragma omp taskwait
-    }
-
-    double end_time = omp_get_wtime();
-
-    cout << "All tasks executed in " << end_time - start_time << "s" << endl;*/
-
-
-int get_unloaded_core1(const double cores_load[4]){
-    for(unsigned i = 0; i < 4; ++i)
-            if(cores_load[i] == 0) return i;
-        return -1;
 }
 
-int get_less_loaded_core1(const double cores_load[4]){
-    int min = 0;
-#pragma omp single
+ParallelScheduler::~ParallelScheduler() {
 
-    for(unsigned i = 0; i < 4; ++i)
-        if(cores_load[i] < min) min = i;
+}
+
+int ParallelScheduler::get_unloaded_core(const double cores_load[4]) {
+    for (unsigned i = 0; i < 4; ++i)
+        if (cores_load[i] == 0) return i;
+    return -1;
+}
+
+int ParallelScheduler::get_less_loaded_core(const double cores_load[4]) {
+    int min = 0;
+    for (unsigned i = 0; i < 4; ++i)
+        if (cores_load[i] < cores_load[min]) min = i;
     return min;
 }
 
-bool exist_suitable_core1(const double cores_load[4], double task_load){
-    for(unsigned i = 0; i < 4; ++i) {
-        if (cores_load[i]+task_load <= 1.0){
+bool ParallelScheduler::exist_suitable_core(const double cores_load[4], double task_load) {
+    for (unsigned i = 0; i < 4; ++i) {
+        if (cores_load[i] + task_load <= 1.0) {
             return true;
         }
     }
     return false;
 }
 
-void get_cores_load1(const VectorTasks &process_list, double* cores_load){
-#pragma omp single
-
-    for(auto const &process : process_list)
+void ParallelScheduler::get_cores_load(const VectorTasks &process_list, double cores_load[4]) {
+    for (auto const &process : process_list)
         cores_load[process.num_cpu] += process.load;
 }
 
-int get_core_to_assign1(const VectorTasks &process_list, double task_load){
+int ParallelScheduler::get_core_to_assign(const VectorTasks &process_list, double task_load) {
     int core = -1;
-    double cores_load[4] = {0,0,0,0};
+    double cores_load[4] = {0, 0, 0, 0};
 
-    get_cores_load1(process_list, cores_load);
-    print_cores_load(cores_load);
+    get_cores_load(process_list, cores_load);
+    print_cores_load(file_logs, cores_load);
 
-    if(exist_suitable_core1(cores_load, task_load)) {
+    if (exist_suitable_core(cores_load, task_load)) {
+        print_searching_unloaded_core(file_logs);
+
         /* Strategy : in "readme.md" */
-        print_searching_unloaded_core();
-        core = get_unloaded_core1(cores_load);
+        core = get_unloaded_core(cores_load);
         if (core == -1) {
-            print_no_unloaded_core_found();
-            core = get_less_loaded_core1(cores_load);
+            print_no_unloaded_core_found(file_logs);
+            core = get_less_loaded_core(cores_load);
         }
     }
     return core;
 }
 
 
-void launch_parallel(){
+void ParallelScheduler::start() {
 
-    cout << "Launching scheduler in parallel mode..." << endl;
+    std::cout << "Launching scheduler in sequential mode..." << std::endl;
 
     /* Variables */
     pid_t pid;
@@ -85,16 +71,16 @@ void launch_parallel(){
     task task_res;
     unsigned int priority;
     message_queue::size_type rcv_size;
-    std::stringstream ss;
+
     // Sigaction variable to make sure childs are not zombified
     struct sigaction sigchld_action;
     sigchld_action.sa_handler = SIG_DFL;
     sigchld_action.sa_flags = SA_NOCLDWAIT;
+
     // ptime variable to timeout processes and measures exec time
     boost::posix_time::ptime start;
     boost::posix_time::ptime timeout;
-    using clock = boost::posix_time::second_clock;
-
+    using clock = boost::posix_time::microsec_clock;
 
     /* Shared memory building */
     // Delete if exists
@@ -102,9 +88,10 @@ void launch_parallel(){
     // Create a new segment with given name and size
     managed_shared_memory segment(create_only, "MySharedMemory", 65536);
     // Initialize shared memory STL-compatible allocator
-    const ShmemAllocator alloc_inst (segment.get_segment_manager());
+    const ShmemAllocator alloc_inst(segment.get_segment_manager());
     // Construct a vector named "VectorTasks" in shared memory using the previous allocator
     VectorTasks *process_list = segment.construct<VectorTasks>("VectorTasks")(alloc_inst);
+
 
     /* Mutex creation */
     // Delete if exists
@@ -115,29 +102,13 @@ void launch_parallel(){
     /* Open message queue */
     message_queue queue(open_or_create, "scheduler_queue", 1000, sizeof(task));
 
-    /* Open or create file for logging */
-    std::fstream file_logs("logs", std::fstream::out | std::fstream::app);
-    if(file_logs){
-        file_logs.close();
-        std::remove("logs");
-    }
-
-    file_logs.open("logs", std::fstream::out | std::fstream::app);
-
-    /* Create a lock for interprocess synchro */
-    file_lock f_lock;
-
-    /*if(file_logs){
-        file_lock f_lock("logs");
-    }*/
-
-    file_logs.close();
+    file_lock f_lock(filename.c_str());
 
     // Defining a timeout for the scheduler
     timeout = clock::local_time() + boost::posix_time::minutes(1);
 
-    while(clock::local_time() < timeout) {
-        if(queue.try_receive(&task_res, sizeof(task), rcv_size, priority)) {
+    while (clock::local_time() < timeout) {
+        if (queue.try_receive(&task_res, sizeof(task), rcv_size, priority)) {
             // Reseting timeout and start time to endure task supposed duration and compute real exec duration
             timeout = clock::local_time() + boost::posix_time::seconds(task_res.timeout + 60);
             start = clock::local_time();
@@ -147,35 +118,27 @@ void launch_parallel(){
 
             // Create a new task with the specs received from the message queue
             task _task = task_res;
-            print_process_incoming(_task);
 
-            //TODO File locks make the program crash... All logging disabled for the moment !
-            /*// Write into logs (secured by file_lock for interprocess)
-            if(file_logs){
-                ss << "**** New task arrived : "
-                    << _task << " ****" << std::endl;
-                file_logs << ss.str();
-                file_logs.flush();
-                ss.flush();
+            // Write into logs (secured by scoped file_lock for interprocess)
+            {
                 scoped_lock<file_lock> fs_lock(f_lock);
-                //write_into_stream(file_logs, ss);
-            }*/
+                print_process_incoming(file_logs, _task);
+            }
+
 
 
             // Choose the cpu
-            core = get_core_to_assign1(*process_list, _task.load);
+            core = get_core_to_assign(*process_list, _task.load);
             // If there's not a cpu which can handle the task...
             while (core == -1) {
-                print_no_core_available();
-                /*if(file_logs){
-                    ss << "No core available for the moment..." << std::endl;
+                {
                     scoped_lock<file_lock> fs_lock(f_lock);
-                    write_into_stream(file_logs, ss);
-                }*/
+                    print_no_core_available(file_logs);
+                }
                 // Wait for it...
                 sleep(1);
                 // And repeat...
-                core = get_core_to_assign1(*process_list, _task.load);
+                core = get_core_to_assign(*process_list, _task.load);
             }
 
             CPU_SET(core, &set);
@@ -194,7 +157,10 @@ void launch_parallel(){
             pid = fork();
             if (pid == 0) {
                 if (sched_setaffinity(getpid(), sizeof(set), &set) == -1) {
-                    print_set_affinity_error();
+                    {
+                        scoped_lock<file_lock> fs_lock(f_lock);
+                        print_set_affinity_error(file_logs);
+                    }
                     exit(ERROR_SCHED_AFFINITY);
                 } else {
                     std::string command = task_res.command;
@@ -207,8 +173,12 @@ void launch_parallel(){
                         setpgid(getpid(), getpid());
                         std::system(command.c_str());
                         // Tell how good was that ephemeral life...
-                        boost::posix_time::time_duration duration = boost::posix_time::second_clock::local_time() - start;
-                        print_process_handled(_task, getppid(), core, duration.total_milliseconds());
+                        boost::posix_time::time_duration duration =
+                                boost::posix_time::second_clock::local_time() - start;
+                        {
+                            scoped_lock<file_lock> fs_lock(f_lock);
+                            print_process_handled(file_logs, _task, getppid(), core, duration.total_milliseconds());
+                        }
                         exit(EXIT_SUCCESS);
                     } else {
                         sleep(_task.timeout);
@@ -218,7 +188,10 @@ void launch_parallel(){
                         if (result == 0) {
                             // Kill the process because the timeout is exceeded
                             kill(-exec, SIGTERM);
-                            print_process_killed_timeout(_task, getpid());
+                            {
+                                scoped_lock<file_lock> fs_lock(f_lock);
+                                print_process_killed_timeout(file_logs, getpid(), _task);
+                            }
                         }
                     }
 
@@ -235,25 +208,22 @@ void launch_parallel(){
                                             process_list->end());
                     }
 
-                    /*if(file_logs){
-                        ss << "Process handled : "
-                        << _task.timeout << "s"
-                        << " for " << _task.load << "CPU"
-                        << " by PID " << getpid()
-                        << " on core" << core << std::endl;
-                        scoped_lock<file_lock> fs_lock(f_lock);
-                        write_into_stream(file_logs, ss);
-                    }*/
                 }
-                // TODO Check htop -> Les processus pères restent même après l'exit
                 exit(EXIT_SUCCESS);
                 // Parent's exec
             } else {
                 // Tell where the process has been dispatched
-                print_process_sent(pid, core);
+                {
+                    scoped_lock<file_lock> fs_lock(f_lock);
+                    print_process_sent(file_logs, pid, core);
+                }
             }
-            // Make sure childs are not zombies
+            // Make sure children are not zombies
             sigaction(SIGCHLD, &sigchld_action, NULL);
         }
     }
+
+    // Destruct shared memories
+    named_mutex::remove("VectorTasks_mutex");
+    shared_memory_object::remove("MySharedMemory");
 }

@@ -1,26 +1,28 @@
-//
-// Created by blockost on 27/04/16.
-//
-
 #ifndef PROJETGSI_UTIL_H
 #define PROJETGSI_UTIL_H
 
 #include "../main.h"
 #include "../task.h"
 #include <fstream>
-#include <sstream>
 
+void print_process_handled(std::ostream &, task &, pid_t, int, int);
 
-void write_into_stream(std::basic_ostream<char>&, std::stringstream&);
+void print_process_sent(std::ostream &, int, int);
 
-void print_process_handled(task&, pid_t, int, int);
-void print_process_sent(int, int);
-void print_cores_load(const double[]);
-void print_process_incoming(task&);
-void print_process_killed_timeout(task&, pid_t);
-void print_no_core_available(void);
-void print_set_affinity_error(void);
-void print_searching_unloaded_core(void);
-void print_no_unloaded_core_found(void);
+void print_cores_load(std::ostream &, const double[]);
+
+void print_process_incoming(std::ostream &, task &);
+
+void print_process_killed_timeout(std::ostream &, pid_t, task &);
+
+void print_no_core_available(std::ostream &);
+
+void print_set_affinity_error(std::ostream &);
+
+void print_searching_unloaded_core(std::ostream &);
+
+void print_no_unloaded_core_found(std::ostream &);
+
+void print_cannot_open_stream();
 
 #endif //PROJETGSI_UTIL_H

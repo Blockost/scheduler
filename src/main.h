@@ -10,7 +10,9 @@
 /* Project libraries */
 #include "flags.h"
 #include "task.h"
-#include "client.h"
+#include "Scheduler/SequentialScheduler.h"
+#include "Scheduler/ParallelScheduler.h"
+#include "Client/Client.h"
 
 
 #endif
