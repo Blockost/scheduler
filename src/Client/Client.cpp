@@ -1,6 +1,8 @@
 #include "Client.h"
 
 using namespace boost::interprocess;
+namespace pt = boost::property_tree; // Short alias for this namespace
+
 
 Client::Client(std::string queue_name) :
         queue_name{queue_name},
@@ -79,6 +81,56 @@ void Client::send_several_processes(unsigned nb_processes) {
     }
 }
 
+int Client::send_file_processes(){
+    srand(time(NULL));
+    char array[255] = "sleep 3 && echo \"This is a command \"";
+
+    bool empty = true;
+
+    pt::ptree root; // Create a root
+    std::string tmp, path;
+    task _task;
+
+    std::cout << "--- Enter the path of json file  ---" << std::endl;
+    std::cin >> path;
+
+    try
+    {
+        pt::read_json(path, root); // file path
+
+        // A vector to allow storing our task
+        std::vector<task> taks;
+
+        // Iterator over all task
+        for (pt::ptree::value_type &list_task : root)
+        {
+            empty=false;
+            tmp = list_task.second.get<std::string>("command",array); // default array
+            strncpy(_task.command,tmp.c_str(),255);
+            _task.timeout = list_task.second.get<unsigned>("timeout",(rand() % 11) + 1); // default (rand() % 11) + 1)
+            _task.load = list_task.second.get<float>("load", static_cast <float> (rand()) / static_cast <float> (RAND_MAX)); // default static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
+            _task.priority = list_task.second.get<unsigned>("priority",round(rand() % 3 + 1)); // default round(rand() % 3 + 1)
+
+            std::cout << "created : " << _task << std::endl;
+            if (queue.try_send(&_task, sizeof(task), _task.priority)) {
+            std::cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << std::endl;
+            } else {
+            std::cout << termcolor::red << "Task not sent... Queue is full !" << termcolor::reset << std::endl;
+            }
+        }
+
+        if (empty) std::cout << "Your file is empty" << std::endl;
+
+
+        return EXIT_SUCCESS;
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+    return EXIT_FAILURE;
+}
+
 void Client::start() {
 
     std::string choice;
@@ -89,7 +141,8 @@ void Client::start() {
             std::cout << "--- CLIENT ---" << std::endl;
             std::cout << "1: Send 1 process" << std::endl;
             std::cout << "2: Send 3 processes with random attributes" << std::endl;
-            std::cout << "3: stop client" << std::endl;
+            std::cout << "3: Send processes from a json file" << std::endl;
+            std::cout << "4: stop client" << std::endl;
             std::cin >> choice;
             try {
                 boost::lexical_cast<int>(choice);
@@ -97,7 +150,7 @@ void Client::start() {
                 std::cout << "\" " << choice << "\" is not a valid number" << std::endl;
                 choice = "0";
             }
-        } while (choice != "1" && choice != "2" && choice != "3");
+        } while (choice != "1" && choice != "2" && choice != "3" && choice != "4");
 
 
         if (choice == "1")
@@ -106,7 +159,10 @@ void Client::start() {
         if (choice == "2")
             send_several_processes(3);
 
-    } while (choice != "3");
+        if (choice == "3")
+            send_file_processes();
+
+    } while (choice != "4");
 
     std::cout << "Client has been stopped." << std::endl;
 }

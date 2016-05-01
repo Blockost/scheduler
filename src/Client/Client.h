@@ -5,6 +5,10 @@
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include "../main.h"
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/optional/optional.hpp>
+
 
 class Client {
 
@@ -16,6 +20,7 @@ private:
 
     void send_several_processes(unsigned);
 
+    int send_file_processes();
 
 public:
     Client(std::string);
