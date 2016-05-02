@@ -1,12 +1,8 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(Scheduler)
 
-# Add directories to find BOOST
-#set(BOOST_INCLUDEDIR /usr/lib/x86_64-linux-gnu/)
-#set(BOOST_LIBRARYDIR /usr/lib/x86_64-linux-gnu/)
-
 # Let's find BOOST
-find_package(Boost REQUIRED COMPONENTS system program_options) #COMPONENTS
+find_package(Boost REQUIRED COMPONENTS system program_options)
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS} include)
 link_directories(${Boost_INCLUDE_DIRS})
 
