@@ -1,3 +1,11 @@
+/*!
+\file       Scheduler.cpp
+\author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
+\version    0.1
+\date       01/04/2016
+\brief      Scheduler class
+\remarks    none
+*/
 #include <iostream>
 #include "Scheduler.h"
 #include "../util/flags.h"
@@ -6,8 +14,6 @@
 
 Scheduler::Scheduler(std::string filename, int ncores) :
         ncores{ncores}, file_logs{filename}, cores_load{0} {
-
-    std::cout << ncores << std::endl;
 
     // If file exists, then remove it to erase its content
     if (file_logs) {

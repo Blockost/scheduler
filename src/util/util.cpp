@@ -1,3 +1,12 @@
+/*!
+\file       util.cpp
+\author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
+\version    0.1
+\date       01/04/2016
+\brief      Util class
+\remarks    none
+*/
+
 #include "util.h"
 
 
@@ -32,7 +41,6 @@ void print_process_sent(std::ostream &stream, int pid, int core) {
 
 void print_cores_load(std::ostream &stream, const std::vector<double> &cores_load) {
 
-    std::cout << cores_load.size() << std::endl;
     for (unsigned i = 0; i < cores_load.size(); ++i) {
         std::cout << "cpu" << i << ": "
         << cores_load[i] << "; ";

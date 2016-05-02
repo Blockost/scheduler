@@ -1,3 +1,11 @@
+/*!
+\file       Client.cpp
+\author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
+\version    0.1
+\date       01/04/2016
+\brief      Client class
+\remarks    none
+*/
 #include "Client.h"
 
 using namespace boost::interprocess;
