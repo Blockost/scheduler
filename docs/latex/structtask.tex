@@ -1,0 +1,100 @@
+\hypertarget{structtask}{\section{task Struct Reference}
+\label{structtask}\index{task@{task}}
+}
+
+
+{\ttfamily \#include $<$task.\-h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned \hyperlink{structtask_a4fdb5bb3c0cb5b3db9f07e54563f678a}{timeout} = 0
+\item 
+float \hyperlink{structtask_a42d5d60beb455655eb8a2d582e515cac}{load} = 0
+\item 
+int \hyperlink{structtask_a3ed4137e1d0a9047b2a62373958a0f05}{num\-\_\-cpu} = -\/1
+\item 
+unsigned \hyperlink{structtask_a8ad08ffa8d99b3a1dff092a49080763d}{priority} = 0
+\item 
+char \hyperlink{structtask_a83f668482e53b3647813fd7dcbe9d137}{command} \mbox{[}255\mbox{]}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{structtask_a5f598c2f37452c23ecb1f842da93319a}{operator==} (const \hyperlink{structtask}{task} \&left, const \hyperlink{structtask}{task} \&right)
+\begin{DoxyCompactList}\small\item\em Overload the equal operator for comparison. \end{DoxyCompactList}\item 
+std\-::ostream \& \hyperlink{structtask_acf9cb7d6b1b68e8135de2fb5d4770977}{operator$<$$<$} (std\-::ostream \&out, const \hyperlink{structtask}{task} \&\-\_\-task)
+\begin{DoxyCompactList}\small\item\em Overload the stream redirection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Structure allowing to manipulate complex data type\-: a task. \begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{structtask_acf9cb7d6b1b68e8135de2fb5d4770977}{\index{task@{task}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!task@{task}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{const {\bf task} \&}]{\-\_\-task}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{structtask_acf9cb7d6b1b68e8135de2fb5d4770977}
+
+
+Overload the stream redirection. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em out} & stream reference \\
+\hline
+{\em \-\_\-task} & \-: reference to the task that will be write into the stream \\
+\hline
+\end{DoxyParams}
+\hypertarget{structtask_a5f598c2f37452c23ecb1f842da93319a}{\index{task@{task}!operator==@{operator==}}
+\index{operator==@{operator==}!task@{task}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf task} \&}]{left, }
+\item[{const {\bf task} \&}]{right}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{structtask_a5f598c2f37452c23ecb1f842da93319a}
+
+
+Overload the equal operator for comparison. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em left} & first task \\
+\hline
+{\em right} & second task \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if tasks are the same, false otherwise 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structtask_a83f668482e53b3647813fd7dcbe9d137}{\index{task@{task}!command@{command}}
+\index{command@{command}!task@{task}}
+\subsubsection[{command}]{\setlength{\rightskip}{0pt plus 5cm}char task\-::command\mbox{[}255\mbox{]}}}\label{structtask_a83f668482e53b3647813fd7dcbe9d137}
+Command\-: define the command which will be executed by the processor handling the task \hypertarget{structtask_a42d5d60beb455655eb8a2d582e515cac}{\index{task@{task}!load@{load}}
+\index{load@{load}!task@{task}}
+\subsubsection[{load}]{\setlength{\rightskip}{0pt plus 5cm}float task\-::load = 0}}\label{structtask_a42d5d60beb455655eb8a2d582e515cac}
+Load\-: define the cpu load the task will take \hypertarget{structtask_a3ed4137e1d0a9047b2a62373958a0f05}{\index{task@{task}!num\-\_\-cpu@{num\-\_\-cpu}}
+\index{num\-\_\-cpu@{num\-\_\-cpu}!task@{task}}
+\subsubsection[{num\-\_\-cpu}]{\setlength{\rightskip}{0pt plus 5cm}int task\-::num\-\_\-cpu = -\/1}}\label{structtask_a3ed4137e1d0a9047b2a62373958a0f05}
+Num\-\_\-cpu\-: cpu index which the task is assigned on \hypertarget{structtask_a8ad08ffa8d99b3a1dff092a49080763d}{\index{task@{task}!priority@{priority}}
+\index{priority@{priority}!task@{task}}
+\subsubsection[{priority}]{\setlength{\rightskip}{0pt plus 5cm}unsigned task\-::priority = 0}}\label{structtask_a8ad08ffa8d99b3a1dff092a49080763d}
+Priority\-: define task's weight \hypertarget{structtask_a4fdb5bb3c0cb5b3db9f07e54563f678a}{\index{task@{task}!timeout@{timeout}}
+\index{timeout@{timeout}!task@{task}}
+\subsubsection[{timeout}]{\setlength{\rightskip}{0pt plus 5cm}unsigned task\-::timeout = 0}}\label{structtask_a4fdb5bb3c0cb5b3db9f07e54563f678a}
+Timemout\-: number of seconds to wait before killing the task 
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/util/\hyperlink{task_8h}{task.\-h}\end{DoxyCompactItemize}

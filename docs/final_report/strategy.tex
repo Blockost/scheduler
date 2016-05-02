@@ -1,0 +1,74 @@
+\chapter{Stratégie d'ordonnancement}
+
+   \section{Algorithme}
+    
+    Concernant l'algorithme d'ordonnancement utilisé, nous avons décidé de développer notre propre solution. Dans la section suivante, nous expliquerons pourquoi avoir fait ce choix. Voici la traduction en pseudo-code :
+    
+    \begin{verbatim}
+    TANT QUE non timeout FAIRE
+        -- Une nouvelle tâche arrive
+        SI aucun processeur ne peut contenir la tâche
+            Attendre qu'un processeur se libère
+        SINON
+            SI un processeur est vide (pas de tâches en cours)
+                lui attribuer automatiquement la tâche.
+            SINON
+                Récupérer le processeur le moins utilisé
+                Lui assigner la tâche
+            FINSI
+        FINSI
+    FIN TQ
+    \end{verbatim}
+    
+    \section{Choix de la stratégie}
+
+    Notre stratégie d'ordonnancement dérive de l'une des stratégies les plus répandues : \texttt{Load balancing} + FIFO. Cette stratégie implémente le principe d'une file d'attente. Le premier processus arrivé est affecté\footnote{\textsc{FIFO}: \texttt{First In First Out}}. \newline 
+    Bien que relativement simple, cette solution a pour avantage de garder les ressources occupées et de ne pas surcharger un processeur grâce à la répartition des charges. \newline
+    
+    Le développement de notre propre algorithme de \texttt{scheduling} nous a permis d'inclure certaines optimisations et fonctionnalités supplémentaires. Nous détaillerons ces fonctionnalités dans la section \textsc{Optimisation de l'ordonnancement}.
+    
+    Il est intéressant de noter que notre ordonnanceur vise en priorité les processeurs vides afin d'affecter une tâche. Nous avons donc une optimisation horizontale de la charge CPU. Cela diffère d'une optimisation verticale qui recherche à mettre le maximum de ressources sur un processeur avant de passer au suivant. 
+    
+    \underline{Raison} : Il nous semble plus intéressant de chercher à paralléliser le plus possible les processus afin de gagner en temps d'exécution plutôt qu'à optimiser les ressources dans un système quasiment non contraint en CPU. De ce fait, nous utilisons toute la puissance disponible sur la machine.\newline
+    
+    
+    \section{Implémentation}
+    
+    Afin de pouvoir doter le programme d'une interface utilisateur fluide, nous avons opté pour une architecture \texttt{Client-Serveur}. Le client\footnote{Le client s'exécute avec la commande Scheduler -c (ou --client)} permet de remplir la file de message de plusieurs manières\footnote{Cf. \textsc{Présentation de l'interface utilisateur}}. L'utilisation de la file de message permet d'avoir un canal de communication quasi-instantanée entre le client et l'ordonnanceur tout en ne consommant que très peu de ressources (dû à son implémentation très bas niveau en C).\newline
+    
+    Le serveur\footnote{Le serveur s'exécute avec la commande Scheduler -s pour le mode séquentiel ou Scheduler -p pour le mode parallèle}, séquentiel ou parallèle, lit tous les messages de la file de messages, selon leur ordre d'arrivée (FIFO).
+    
+    
+    \subsection{En parallèle}
+    
+    Notre \texttt{scheduler} dispose d'un mode parallèle. Dans ce mode, certaines opérations d'ordonnancement ont été optimisées avec la librairie \texttt{OpenMP} afin de réduire le temps entre le moment où une tâche arrive et le temps où elle est affectée à un processeur. \newline
+    
+    Les fonctions paralèllisées sont les suivantes : 
+    
+    \begin{itemize}
+        \item Recherche d'un processeur capable de contenir la tâche
+        \item Recherche d'un processeur vide
+        \item Recherche du processeur le moins chargé
+    \end{itemize}
+    
+    Il est important de noter que la file de message de l'ordonnanceur reste la même quelque soit le mode. Il est donc tout à fait possible de traiter quelques tâches en mode séquentiel, d'arrêter le programme et de le relancer en mode parallèle afin de terminer les affectations.\newline
+     
+    Malgré nos efforts d'implémentation, il ne s'agit pas réellement d'un \texttt{scheduler} parallèle. En effet, les tâches ne sont pas affectées à un processeur de manière simultanée mais seulement quelques opérations de recherche ont été optimisées.
+    
+    \section{Optimisation de l'ordonnancement}
+    
+    Comme précisé précédemment, le développement de notre propre algorithme d'ordonnancement nous a permis d'y inclure quelques fonctionnalités supplémentaires. Ces améliorations sont disponibles en mode séquentiel et parallèle.
+    
+    \subsection{Tâches prioritaires}
+    
+    Lorsque l'utilisateur crée une tâche, il doit lui affecter une priorité\footnote{Cf. \textsc{Présentation de l'interface utilisateur}}. Cette priorité permet à l'ordonnanceur de savoir que la tâche doit être affecté le plus rapidement possible. Ainsi, dans la file de message, le \texttt{scheduler} cherchera toujours à assigner la plus ancienne tâche (arrivée la première) avec la priorité la plus élevée.
+    
+    \subsection{Expiration d'une tâche}
+    
+    Nous avons implémenté un système permettant de tuer une tâche trop longue à s'exécuter. En effet, si le temps d'exécution \textbf{réel} dépasse le \texttt{timeout}\footnote{Cf. \textsc{Présentation de l'interface utilisateur}}, la tâche expire et est tuée par l'ordonnanceur. \newline
+    
+    Cette méthode n'est pas une étape en plus dans la boucle\footnote{Cf. \textsc{Algorithme}} pour le \texttt{scheduler} car elle ne s'exécute pas dans le \texttt{thread} principale du programme. En effet,  elle est encapsulée dans l'exécution de la tâche elle-même, ce qui permet la libération de charges sur le CPU tout en continuant l'affectation. Pour schématiser, son comportement est semblable à une tâche qui détecterait elle-même qu'elle dépasse le temps que le processeur lui avait accordé et se "suiciderait".  Cette fonctionnalité, d'une extrême simplicité, est très efficace et permet de simuler l'ordonnancement dans un système contraint en temps.
+    
+    \subsection{Historique de session}
+    
+    Bien que ce ne soit pas une optimisation d'ordonnancement (car cela n'améliore pas les performances du \texttt{scheduler}), le programme dispose d'un journal contenant l'historique de sa dernière utilisation. Ceci permet d'analyser le comportement de l'ordonnanceur sans avoir à garder un terminal ouvert. Le journal se situe à l'endroit depuis lequel le programme est exécuté.

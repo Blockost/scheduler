@@ -1,0 +1,67 @@
+\documentclass[a4paper,11pt,final]{report}
+
+\usepackage[english,francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage[french]{varioref}
+\usepackage[final]{pdfpages}
+\usepackage{titlesec}
+\usepackage{minted}
+
+\graphicspath{{images/}}
+
+\newcommand{\reporttitle}{Ordonnancement dans des systèmes distribués}
+\newcommand{\reportauthor}{Teddy \textsc{Gilbert} Simon \textsc{Espigolé} Hugo \textsc{Legrand}}
+\newcommand{\reportsubject}{Rapport de projet GSI}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\setlength{\parskip}{1ex}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\huge}
+
+\hypersetup{
+    pdftitle={\reporttitle},
+    pdfauthor={\reportauthor},
+    pdfsubject={\reportsubject},
+    pdfkeywords={rapport} {vos} {mots} {clés}
+}
+
+\author{ESPIGOL\'{E} Simon & GILBERT Teddy & LEGRAND Hugo}
+
+\begin{document}
+
+\include{title}
+
+\include{thanks}
+
+
+\tableofcontents
+
+
+\newpage
+
+\include{intro}
+
+\include{UI}
+
+\include{strategy}
+
+\include{prgm_proceed}
+
+\include{problems_encountered}
+
+\include{opinions}
+
+\include{conclusion}
+
+\include{biblio}
+
+\end{document}
+
+
+% TODO
+%  6.2 Portée des variables et accès concurrents (problems_encountered)
+%  Critiques du module

@@ -1,0 +1,59 @@
+\hypertarget{SequentialScheduler_8h}{\section{src/\-Scheduler/\-Sequential\-Scheduler.h File Reference}
+\label{SequentialScheduler_8h}\index{src/\-Scheduler/\-Sequential\-Scheduler.\-h@{src/\-Scheduler/\-Sequential\-Scheduler.\-h}}
+}
+
+
+Sequential scheduler declaration class.  
+
+
+{\ttfamily \#include $<$boost/interprocess/managed\-\_\-shared\-\_\-memory.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/interprocess/containers/vector.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/interprocess/allocators/allocator.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/interprocess/sync/named\-\_\-mutex.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/interprocess/sync/file\-\_\-lock.\-hpp$>$}\\*
+{\ttfamily \#include $<$sys/wait.\-h$>$}\\*
+{\ttfamily \#include $<$omp.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}Scheduler.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../util/task.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../util/util.\-h\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classSequentialScheduler}{Sequential\-Scheduler}
+\begin{DoxyCompactList}\small\item\em Class modeling a sequential scheduler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \\*
+boost\-::interprocess\-::allocator\\*
+$<$ \hyperlink{structtask}{task}, \\*
+boost\-::interprocess\-::managed\-\_\-shared\-\_\-memory\-::segment\-\_\-manager $>$ \hyperlink{SequentialScheduler_8h_a4bf5f8c8bc334f09e27c1db8def4a1cf}{Shmem\-Allocator}
+\item 
+typedef \\*
+boost\-::interprocess\-::vector\\*
+$<$ \hyperlink{structtask}{task}, \hyperlink{ParallelScheduler_8h_a4bf5f8c8bc334f09e27c1db8def4a1cf}{Shmem\-Allocator} $>$ \hyperlink{SequentialScheduler_8h_ac7eb1fba35a2c780a99ff2d3df789884}{Vector\-Tasks}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Sequential scheduler declaration class. \begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{SequentialScheduler_8h_a4bf5f8c8bc334f09e27c1db8def4a1cf}{\index{Sequential\-Scheduler.\-h@{Sequential\-Scheduler.\-h}!Shmem\-Allocator@{Shmem\-Allocator}}
+\index{Shmem\-Allocator@{Shmem\-Allocator}!SequentialScheduler.h@{Sequential\-Scheduler.\-h}}
+\subsubsection[{Shmem\-Allocator}]{\setlength{\rightskip}{0pt plus 5cm}typedef boost\-::interprocess\-::allocator$<${\bf task}, boost\-::interprocess\-::managed\-\_\-shared\-\_\-memory\-::segment\-\_\-manager$>$ {\bf Shmem\-Allocator}}}\label{SequentialScheduler_8h_a4bf5f8c8bc334f09e27c1db8def4a1cf}
+\hypertarget{SequentialScheduler_8h_ac7eb1fba35a2c780a99ff2d3df789884}{\index{Sequential\-Scheduler.\-h@{Sequential\-Scheduler.\-h}!Vector\-Tasks@{Vector\-Tasks}}
+\index{Vector\-Tasks@{Vector\-Tasks}!SequentialScheduler.h@{Sequential\-Scheduler.\-h}}
+\subsubsection[{Vector\-Tasks}]{\setlength{\rightskip}{0pt plus 5cm}typedef boost\-::interprocess\-::vector$<${\bf task}, {\bf Shmem\-Allocator}$>$ {\bf Vector\-Tasks}}}\label{SequentialScheduler_8h_ac7eb1fba35a2c780a99ff2d3df789884}

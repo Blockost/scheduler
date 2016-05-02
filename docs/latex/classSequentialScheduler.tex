@@ -1,0 +1,221 @@
+\hypertarget{classSequentialScheduler}{\section{Sequential\-Scheduler Class Reference}
+\label{classSequentialScheduler}\index{Sequential\-Scheduler@{Sequential\-Scheduler}}
+}
+
+
+Class modeling a sequential scheduler.  
+
+
+
+
+{\ttfamily \#include $<$Sequential\-Scheduler.\-h$>$}
+
+Inheritance diagram for Sequential\-Scheduler\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classSequentialScheduler}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSequentialScheduler_a4c04f1691f53c150a1fe2a2be5a92bed}{Sequential\-Scheduler} (const std\-::string \&, const std\-::string \&, int)
+\begin{DoxyCompactList}\small\item\em Sequential scheduler class constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classSequentialScheduler_a4603b4f03aba99b87a80d75f68dbd746}{$\sim$\-Sequential\-Scheduler} ()
+\begin{DoxyCompactList}\small\item\em Default sequential scheduler class destructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classSequentialScheduler_a9603767b779a4612f02ac85bc4c49bf6}{start} ()
+\begin{DoxyCompactList}\small\item\em This method starts the scheduler in sequential mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classSequentialScheduler_ae8af6ea6af9b34144e657e208e5bf23e}{get\-\_\-unloaded\-\_\-core} (const std\-::vector$<$ double $>$ \&)
+\begin{DoxyCompactList}\small\item\em Method looking for an unloaded core and returning its index. \end{DoxyCompactList}\item 
+int \hyperlink{classSequentialScheduler_a7731305cd82efe8c55af85d654996d90}{get\-\_\-less\-\_\-loaded\-\_\-core} (const std\-::vector$<$ double $>$ \&)
+\begin{DoxyCompactList}\small\item\em Method looking for the less loaded core. \end{DoxyCompactList}\item 
+bool \hyperlink{classSequentialScheduler_a4155dae41da7b17bee2e784e03ecad8f}{exist\-\_\-suitable\-\_\-core} (const std\-::vector$<$ double $>$ \&, double)
+\begin{DoxyCompactList}\small\item\em Method looking for a core which can handle the task. \end{DoxyCompactList}\item 
+void \hyperlink{classSequentialScheduler_a76d17fb75bdd0cee7284086581a18515}{get\-\_\-cores\-\_\-load} (const \hyperlink{ParallelScheduler_8h_ac7eb1fba35a2c780a99ff2d3df789884}{Vector\-Tasks} \&, std\-::vector$<$ double $>$ \&)
+\begin{DoxyCompactList}\small\item\em Method retrieving the load of each core and filling cores\-\_\-load with the data. \end{DoxyCompactList}\item 
+int \hyperlink{classSequentialScheduler_af4c223d08734e1daa294ae19d74ca4f1}{get\-\_\-core\-\_\-to\-\_\-assign} (const \hyperlink{ParallelScheduler_8h_ac7eb1fba35a2c780a99ff2d3df789884}{Vector\-Tasks} \&, double)
+\begin{DoxyCompactList}\small\item\em Main method looking for a core that can handle the task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \hyperlink{classSequentialScheduler_a86b32eaf91dbc706879c43194142d554}{filename}
+\item 
+std\-::string \hyperlink{classSequentialScheduler_a2bb2fec195ae97c733509221cf6f293f}{queue\-\_\-name}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class modeling a sequential scheduler. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSequentialScheduler_a4c04f1691f53c150a1fe2a2be5a92bed}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!Sequential\-Scheduler@{Sequential\-Scheduler}}
+\index{Sequential\-Scheduler@{Sequential\-Scheduler}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{Sequential\-Scheduler}]{\setlength{\rightskip}{0pt plus 5cm}Sequential\-Scheduler\-::\-Sequential\-Scheduler (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{queue\-\_\-name, }
+\item[{const std\-::string \&}]{filename, }
+\item[{int}]{ncores}
+\end{DoxyParamCaption}
+)}}\label{classSequentialScheduler_a4c04f1691f53c150a1fe2a2be5a92bed}
+
+
+Sequential scheduler class constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue\-\_\-name} & the name of the message queue \\
+\hline
+{\em filename} & name of the file which will be opened as the stream file\-\_\-logs \\
+\hline
+{\em ncores} & number of cores available for the scheduler \\
+\hline
+\end{DoxyParams}
+\hypertarget{classSequentialScheduler_a4603b4f03aba99b87a80d75f68dbd746}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!$\sim$\-Sequential\-Scheduler@{$\sim$\-Sequential\-Scheduler}}
+\index{$\sim$\-Sequential\-Scheduler@{$\sim$\-Sequential\-Scheduler}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{$\sim$\-Sequential\-Scheduler}]{\setlength{\rightskip}{0pt plus 5cm}Sequential\-Scheduler\-::$\sim$\-Sequential\-Scheduler (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classSequentialScheduler_a4603b4f03aba99b87a80d75f68dbd746}
+
+
+Default sequential scheduler class destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classSequentialScheduler_a4155dae41da7b17bee2e784e03ecad8f}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!exist\-\_\-suitable\-\_\-core@{exist\-\_\-suitable\-\_\-core}}
+\index{exist\-\_\-suitable\-\_\-core@{exist\-\_\-suitable\-\_\-core}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{exist\-\_\-suitable\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}bool Sequential\-Scheduler\-::exist\-\_\-suitable\-\_\-core (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{cores\-\_\-load, }
+\item[{double}]{task\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classSequentialScheduler_a4155dae41da7b17bee2e784e03ecad8f}
+
+
+Method looking for a core which can handle the task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+{\em task\-\_\-load} & the task's load \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a core exists, false otherwise 
+\end{DoxyReturn}
+\hypertarget{classSequentialScheduler_af4c223d08734e1daa294ae19d74ca4f1}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!get\-\_\-core\-\_\-to\-\_\-assign@{get\-\_\-core\-\_\-to\-\_\-assign}}
+\index{get\-\_\-core\-\_\-to\-\_\-assign@{get\-\_\-core\-\_\-to\-\_\-assign}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{get\-\_\-core\-\_\-to\-\_\-assign}]{\setlength{\rightskip}{0pt plus 5cm}int Sequential\-Scheduler\-::get\-\_\-core\-\_\-to\-\_\-assign (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector\-Tasks} \&}]{process\-\_\-list, }
+\item[{double}]{task\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classSequentialScheduler_af4c223d08734e1daa294ae19d74ca4f1}
+
+
+Main method looking for a core that can handle the task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em process\-\_\-list} & vector containing the tasks that which are assigned to a core \\
+\hline
+{\em task\-\_\-load} & the load of the task \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the core if there's one, -\/1 otherwise 
+\end{DoxyReturn}
+\hypertarget{classSequentialScheduler_a76d17fb75bdd0cee7284086581a18515}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!get\-\_\-cores\-\_\-load@{get\-\_\-cores\-\_\-load}}
+\index{get\-\_\-cores\-\_\-load@{get\-\_\-cores\-\_\-load}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{get\-\_\-cores\-\_\-load}]{\setlength{\rightskip}{0pt plus 5cm}void Sequential\-Scheduler\-::get\-\_\-cores\-\_\-load (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector\-Tasks} \&}]{process\-\_\-list, }
+\item[{std\-::vector$<$ double $>$ \&}]{cores\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classSequentialScheduler_a76d17fb75bdd0cee7284086581a18515}
+
+
+Method retrieving the load of each core and filling cores\-\_\-load with the data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em process\-\_\-list} & vector containing the tasks which are assigned to a core \\
+\hline
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+\end{DoxyParams}
+\hypertarget{classSequentialScheduler_a7731305cd82efe8c55af85d654996d90}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!get\-\_\-less\-\_\-loaded\-\_\-core@{get\-\_\-less\-\_\-loaded\-\_\-core}}
+\index{get\-\_\-less\-\_\-loaded\-\_\-core@{get\-\_\-less\-\_\-loaded\-\_\-core}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{get\-\_\-less\-\_\-loaded\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}int Sequential\-Scheduler\-::get\-\_\-less\-\_\-loaded\-\_\-core (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{cores\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classSequentialScheduler_a7731305cd82efe8c55af85d654996d90}
+
+
+Method looking for the less loaded core. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the less loaded core 
+\end{DoxyReturn}
+\hypertarget{classSequentialScheduler_ae8af6ea6af9b34144e657e208e5bf23e}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!get\-\_\-unloaded\-\_\-core@{get\-\_\-unloaded\-\_\-core}}
+\index{get\-\_\-unloaded\-\_\-core@{get\-\_\-unloaded\-\_\-core}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{get\-\_\-unloaded\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}int Sequential\-Scheduler\-::get\-\_\-unloaded\-\_\-core (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{cores\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classSequentialScheduler_ae8af6ea6af9b34144e657e208e5bf23e}
+
+
+Method looking for an unloaded core and returning its index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the unloaded core or -\/1 if no core 
+\end{DoxyReturn}
+\hypertarget{classSequentialScheduler_a9603767b779a4612f02ac85bc4c49bf6}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!start@{start}}
+\index{start@{start}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}void Sequential\-Scheduler\-::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classSequentialScheduler_a9603767b779a4612f02ac85bc4c49bf6}
+
+
+This method starts the scheduler in sequential mode. 
+
+
+
+Implements \hyperlink{classScheduler_aaa8fed2f8fab3a5c0e5d1d462915e415}{Scheduler}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classSequentialScheduler_a86b32eaf91dbc706879c43194142d554}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!filename@{filename}}
+\index{filename@{filename}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{filename}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Sequential\-Scheduler\-::filename\hspace{0.3cm}{\ttfamily [private]}}}\label{classSequentialScheduler_a86b32eaf91dbc706879c43194142d554}
+ame of the file which will be opened as the stream file\-\_\-logs \hypertarget{classSequentialScheduler_a2bb2fec195ae97c733509221cf6f293f}{\index{Sequential\-Scheduler@{Sequential\-Scheduler}!queue\-\_\-name@{queue\-\_\-name}}
+\index{queue\-\_\-name@{queue\-\_\-name}!SequentialScheduler@{Sequential\-Scheduler}}
+\subsubsection[{queue\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Sequential\-Scheduler\-::queue\-\_\-name\hspace{0.3cm}{\ttfamily [private]}}}\label{classSequentialScheduler_a2bb2fec195ae97c733509221cf6f293f}
+Name of the queue 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\-Scheduler/\hyperlink{SequentialScheduler_8h}{Sequential\-Scheduler.\-h}\item 
+src/\-Scheduler/\hyperlink{SequentialScheduler_8cpp}{Sequential\-Scheduler.\-cpp}\end{DoxyCompactItemize}

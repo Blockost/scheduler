@@ -1,0 +1,30 @@
+\chapter{Introduction}
+    \section{Définition du sujet}
+    
+    L'ordonnanceur (\texttt{scheduler}, en anglais) est l'élément central d'un système d'exploitation multi-processus. L'ordonnancement (\texttt{Scheduling}) définie une méthode par laquelle un travail, \texttt{work}, va être attribué à un processeur pour une partie ou pour la totalité de son fonctionnement. Un ordinateur disposant de ressources limitées et un travail nécessitant des ressources pour fonctionner (puissance de calcul, capacité mémoire, etc...), l'ordonnanceur doit savoir répartir ces travaux afin d'optimiser les ressources matérielles à disposition du système. Il peut avoir plusieurs objectifs : 
+    
+    \begin{itemize}
+        \item Optimisation du nombre de travaux complétés par unité de temps (\texttt{Maximize throughput})
+        \item Minimiser le temps de réponse d'un processus en particulier (\texttt{Latency})
+        \item Minimiser le temps d'attente des programmes dans la file d'attente (\texttt{Responsiveness})
+        \item Égaliser les ressources disponibles pour chaque processus (\texttt{Fairness})
+        \item etc...
+    \end{itemize}
+    
+    Il est très difficile d'implémenter un ordonnanceur capable d'optimiser plusieurs aspects à la fois. Par exemple, il faut faire un compromis entre le nombre de travaux complétés et le temps de réponse d'un processus en particulier (\texttt{Throughput} VS \texttt{Latency}). De plus, chaque optimisation de l'ordonnanceur correspond à une stratégie d'ordonnancement spécifique et peut avoir de sérieuses conséquences sur la stabilité et les performances du système d'exploitation.
+    
+    \section{Contexte et objectif}
+        
+    Dans le cadre du Projet GSI de seconde année d'ingénieur, nous avons réalisé un scheduler permettant d'ordonnancer différents processus selon une certaine stratégie d’ordonnancement. À réaliser en équipe de 3 personnes, nous avons utilisé les méthodes vues en cours pour développer ce projet, qui nous a permis d'apprendre la programmation C++ et la programmation parallèle. De plus, pour la première fois notre outil de gestion de version de code (GitLAB) a été accessible par le responsable du projet, nous avons donc du adapter nos commits à cette situation, les décrire d'une façon plus claire, mais surtout utiliser une convention de nommage comme suit :
+    
+    \begin{itemize}
+        \item Séparer le sujet du corps avec un saut de ligne
+        \item Limiter le sujet à 50 caractères
+        \item Mettre une majuscule au premier mot du sujet
+        \item Ne pas finir le sujet par un point
+        \item Utiliser l'impératif pour le sujet
+        \item Limiter le corps à 72 caractères par ligne
+        \item Utiliser le corps pour expliquer quoi, pourquoi et comment
+    \end{itemize}
+    
+    Nous avons donc essayé d'aller au-delà des attentes classiques d'un projet Eistien pour avoir une approche encore plus professionnelle du projet informatique.

@@ -1,0 +1,127 @@
+\hypertarget{classScheduler}{\section{Scheduler Class Reference}
+\label{classScheduler}\index{Scheduler@{Scheduler}}
+}
+
+
+This is the base class for the scheduler. Only called by subclass constructor.  
+
+
+
+
+{\ttfamily \#include $<$Scheduler.\-h$>$}
+
+Inheritance diagram for Scheduler\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classScheduler}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classScheduler_abff3c6b4c4c7823bdf4b61f2116e1c13}{Scheduler} (std\-::string, int)
+\begin{DoxyCompactList}\small\item\em \hyperlink{classScheduler}{Scheduler} class constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classScheduler_afc8187779b46f64039d3ffa58f0dbe51}{$\sim$\-Scheduler} ()
+\begin{DoxyCompactList}\small\item\em Default scheduler destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classScheduler_a1befb7a203a0e28730e5aa6489bc2a44}{init\-Cores} ()
+\begin{DoxyCompactList}\small\item\em Method initializing each core's load to 0. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classScheduler_aaa8fed2f8fab3a5c0e5d1d462915e415}{start} ()=0
+\begin{DoxyCompactList}\small\item\em Pure virtual method. Will be implemented by the subclasses and never called. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::fstream \hyperlink{classScheduler_aaa404121f2a46a4012fc6b11374dae29}{file\-\_\-logs}
+\item 
+std\-::vector$<$ double $>$ \hyperlink{classScheduler_a6f6825fef1ef0a243ebd42751f2186f9}{cores\-\_\-load}
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classScheduler_ac2ae53ef390e5372fdfb9c850f91d0c7}{ncores}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is the base class for the scheduler. Only called by subclass constructor. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classScheduler_abff3c6b4c4c7823bdf4b61f2116e1c13}{\index{Scheduler@{Scheduler}!Scheduler@{Scheduler}}
+\index{Scheduler@{Scheduler}!Scheduler@{Scheduler}}
+\subsubsection[{Scheduler}]{\setlength{\rightskip}{0pt plus 5cm}Scheduler\-::\-Scheduler (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{filename, }
+\item[{int}]{ncores}
+\end{DoxyParamCaption}
+)}}\label{classScheduler_abff3c6b4c4c7823bdf4b61f2116e1c13}
+
+
+\hyperlink{classScheduler}{Scheduler} class constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & name of the file which will be opened as the stream file\-\_\-logs \\
+\hline
+{\em ncores} & number of cores available for the scheduler \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScheduler_afc8187779b46f64039d3ffa58f0dbe51}{\index{Scheduler@{Scheduler}!$\sim$\-Scheduler@{$\sim$\-Scheduler}}
+\index{$\sim$\-Scheduler@{$\sim$\-Scheduler}!Scheduler@{Scheduler}}
+\subsubsection[{$\sim$\-Scheduler}]{\setlength{\rightskip}{0pt plus 5cm}Scheduler\-::$\sim$\-Scheduler (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classScheduler_afc8187779b46f64039d3ffa58f0dbe51}
+
+
+Default scheduler destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classScheduler_a1befb7a203a0e28730e5aa6489bc2a44}{\index{Scheduler@{Scheduler}!init\-Cores@{init\-Cores}}
+\index{init\-Cores@{init\-Cores}!Scheduler@{Scheduler}}
+\subsubsection[{init\-Cores}]{\setlength{\rightskip}{0pt plus 5cm}void Scheduler\-::init\-Cores (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{classScheduler_a1befb7a203a0e28730e5aa6489bc2a44}
+
+
+Method initializing each core's load to 0. 
+
+\hypertarget{classScheduler_aaa8fed2f8fab3a5c0e5d1d462915e415}{\index{Scheduler@{Scheduler}!start@{start}}
+\index{start@{start}!Scheduler@{Scheduler}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Scheduler\-::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}}\label{classScheduler_aaa8fed2f8fab3a5c0e5d1d462915e415}
+
+
+Pure virtual method. Will be implemented by the subclasses and never called. 
+
+
+
+Implemented in \hyperlink{classSequentialScheduler_a9603767b779a4612f02ac85bc4c49bf6}{Sequential\-Scheduler}, and \hyperlink{classParallelScheduler_aef0d5f1091857170434687897d19843e}{Parallel\-Scheduler}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classScheduler_a6f6825fef1ef0a243ebd42751f2186f9}{\index{Scheduler@{Scheduler}!cores\-\_\-load@{cores\-\_\-load}}
+\index{cores\-\_\-load@{cores\-\_\-load}!Scheduler@{Scheduler}}
+\subsubsection[{cores\-\_\-load}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$double$>$ Scheduler\-::cores\-\_\-load\hspace{0.3cm}{\ttfamily [protected]}}}\label{classScheduler_a6f6825fef1ef0a243ebd42751f2186f9}
+vector containing each core's load \hypertarget{classScheduler_aaa404121f2a46a4012fc6b11374dae29}{\index{Scheduler@{Scheduler}!file\-\_\-logs@{file\-\_\-logs}}
+\index{file\-\_\-logs@{file\-\_\-logs}!Scheduler@{Scheduler}}
+\subsubsection[{file\-\_\-logs}]{\setlength{\rightskip}{0pt plus 5cm}std\-::fstream Scheduler\-::file\-\_\-logs\hspace{0.3cm}{\ttfamily [protected]}}}\label{classScheduler_aaa404121f2a46a4012fc6b11374dae29}
+Stream to a local file. Used to write the scheduler's logs \hypertarget{classScheduler_ac2ae53ef390e5372fdfb9c850f91d0c7}{\index{Scheduler@{Scheduler}!ncores@{ncores}}
+\index{ncores@{ncores}!Scheduler@{Scheduler}}
+\subsubsection[{ncores}]{\setlength{\rightskip}{0pt plus 5cm}int Scheduler\-::ncores\hspace{0.3cm}{\ttfamily [private]}}}\label{classScheduler_ac2ae53ef390e5372fdfb9c850f91d0c7}
+Number of cores available for the scheduler 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\-Scheduler/\hyperlink{Scheduler_8h}{Scheduler.\-h}\item 
+src/\-Scheduler/\hyperlink{Scheduler_8cpp}{Scheduler.\-cpp}\end{DoxyCompactItemize}

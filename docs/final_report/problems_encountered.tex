@@ -1,0 +1,50 @@
+\chapter{Problèmes rencontrés}
+
+Pendant le développement de ce projet, nous avons chacun rencontré différents problèmes. Heureusement composé de trois membres, notre groupe a su répondre aux problématiques de chacun de ses membres en s'entraidant dans les difficultés rencontrées par tous les protagonistes. En outre, cette entraide nous a permis de mieux cerner le sujet mais aussi mieux comprendre les enjeux de la parallélisation.
+
+\section{Processus zombies}
+
+    Du fait de la parallélisation, nous avons connu quelques problèmes avec les processus zombies. En effet, nous lançons la commande demandée par l'utilisateur sur un processus nouveau, ce qui nous permet de la contrôler entièrement (finir son exécution ou la tuer). Or, certains processus restaient en mode zombie plutôt que de se terminer proprement. Après quelques recherches, nous avons trouvé la solution en faisant comme suit :
+
+    \vbox{
+    \begin{minted}{c}
+        if (exec == 0) {
+            setpgid(getpid(), getpid());
+            std::system(command.c_str());
+            ...
+            exit(EXIT_SUCCESS);
+        } else {
+            sleep(_task.timeout);
+            pid_t result = waitpid(exec, &status, WNOHANG);
+            // If his child is still alive...
+            if (result == 0) {
+                // Kill the process because the timeout is exceeded
+                kill(-exec, SIGTERM);
+                ...
+            }
+        }
+    \end{minted}
+    }
+    
+    En effet, pour terminer un fils proprement, il faut envoyer le signal \textsc{EXIT\_SUCCESS}. Le père, si le timeout est dépassé, va récupérer le signal de fin d'exécution du fils avec la commande \textsc{waitpid}. Si le résultat vaut 0 (signal renvoyé si le fils est toujours en vie), alors le père va décider de le tuer avec la commande \textsc{kill(-exec, SIGTERM)}. Il faut noter que le "-" placé devant le PID "exec" permet de rendre le PID négatif et donc de tuer tous les processus associés au groupe de processus ayant pour PGID "exec". Le PGID est défini grâce à la ligne \textsc{setpgid(getpid(), getpid());}.
+
+\section{Portée des variables et accès concurrents}
+
+    L'une des premières difficultés lors de l'exécution parallèle des tâches a été la portée des variables du programme. En effet, lors d'un \texttt{fork}, les variables communes entre le processus père et son fils ne sont pas partagées mais copiées. Précisément, un fils a accès aux variables de son père mais leur contexte reste celui juste avant le \texttt{fork}. De ce fait, le père ne peut en aucun cas avoir connaissance des changements apporter par son fils sur ces variables. Pour y faire face, nous les avons placées à l'intérieur de conteneur, des \texttt{Shared Memory}. En procédant de cette manière, plusieurs processus peuvent lire et modifier une même variable à travers un programme. \newline
+    
+    Cependant, la lecture et l'écriture simultanée d'une variable, d'un fichier texte ou d'une structure entraîne des accès concurrents. Nous avons dû sécurisé ces opérations grâce à des \texttt{mutex}. Il s'agit d'un système de jeton permettant de restreindre l'accès d'un objet à un seul et unique processus à un instant t.
+
+    
+
+\section{Parallélisation et échange de variables}
+    
+    Lors de la parallélisation du scheduler, nous avons rencontré plusieurs problèmes de concurrences. Tout d'abord, en appliquant une simple parallélisation des boucles for pour la recherche du CPU. Un problème est alors survenu sur la charge des CPU. Ils dépassaient leur charge possible (>1). Il a fallu partager avec un \textsc{\#pragma omp shared} les boucles afin d'éviter ce problème.
+    
+    De plus, lors de la recherche d'un CPU libre, la boucle for se coupait si l'un des CPU était libre. Or en parallélisation, cela n'est pas possible. Donc nous avons rajouté une variable de stockage. Puis à la fin de la parallélisation, nous avons fait une somme logique grâce au \textsc{\#pragma omp reduction}. 
+    
+    Pour finir, un problème venait de la parallélisation des affectations. Cela n'est pas possible hormis si nous mettions un endroit critique afin que tous les threads n'affectent pas leur valeur en même temps. Cette fonction est donc restée non parallèle. Ce sont les limites de la parallélisation. 
+    
+\section{Problèmes liés à l'horloge}
+
+    Lors de l'implémentation d'une horloge pour mesurer le temps d'exécution réel d'une commande passée par l'utilisateur, nous avons remarqué que pour une commande censée durer 5 secondes, l'horloge nous affiche un temps de 4100ms à 4900ms environ. En effet nous pensons que cela est dû au temps d'initialisation de l'horloge, qui varie selon l'exécution.
+    Nous n'avons cependant pas trouvé de solution à cette problématique.

@@ -1,0 +1,221 @@
+\hypertarget{classParallelScheduler}{\section{Parallel\-Scheduler Class Reference}
+\label{classParallelScheduler}\index{Parallel\-Scheduler@{Parallel\-Scheduler}}
+}
+
+
+Class modeling a parallel scheduler.  
+
+
+
+
+{\ttfamily \#include $<$Parallel\-Scheduler.\-h$>$}
+
+Inheritance diagram for Parallel\-Scheduler\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classParallelScheduler}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classParallelScheduler_a11e91f323808008a8a35961aa84211bf}{Parallel\-Scheduler} (std\-::string, std\-::string, int)
+\begin{DoxyCompactList}\small\item\em Parallel scheduler class constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classParallelScheduler_a995351f4556a464e6c4a78e01cea583c}{$\sim$\-Parallel\-Scheduler} ()
+\begin{DoxyCompactList}\small\item\em Default parallel scheduler class destructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classParallelScheduler_aef0d5f1091857170434687897d19843e}{start} ()
+\begin{DoxyCompactList}\small\item\em This method starts the scheduler in parallel mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classParallelScheduler_a3a3bd8e72a7dbc83986cf31918569fd3}{get\-\_\-unloaded\-\_\-core} (const std\-::vector$<$ double $>$ \&)
+\begin{DoxyCompactList}\small\item\em Method looking for an unloaded core and returning its index. \end{DoxyCompactList}\item 
+int \hyperlink{classParallelScheduler_ad58ae6d78d6920e548d7c6c956fa3caa}{get\-\_\-less\-\_\-loaded\-\_\-core} (const std\-::vector$<$ double $>$ \&)
+\begin{DoxyCompactList}\small\item\em Method looking for the less loaded core. \end{DoxyCompactList}\item 
+bool \hyperlink{classParallelScheduler_af52a8e359a4134fec49db090781caf8b}{exist\-\_\-suitable\-\_\-core} (const std\-::vector$<$ double $>$ \&, double)
+\begin{DoxyCompactList}\small\item\em Method looking for a core which can handle the task. \end{DoxyCompactList}\item 
+void \hyperlink{classParallelScheduler_a7925556ff7ab1b4746a72709b24f157e}{get\-\_\-cores\-\_\-load} (const \hyperlink{ParallelScheduler_8h_ac7eb1fba35a2c780a99ff2d3df789884}{Vector\-Tasks} \&, std\-::vector$<$ double $>$ \&)
+\begin{DoxyCompactList}\small\item\em Method retrieving the load of each core and filling cores\-\_\-load with the data. \end{DoxyCompactList}\item 
+int \hyperlink{classParallelScheduler_ad71e8b952aee7b123c612540564fa090}{get\-\_\-core\-\_\-to\-\_\-assign} (const \hyperlink{ParallelScheduler_8h_ac7eb1fba35a2c780a99ff2d3df789884}{Vector\-Tasks} \&, double)
+\begin{DoxyCompactList}\small\item\em Main method looking for a core that can handle the task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \hyperlink{classParallelScheduler_a5cd72cd536a5183e04b922fa2eb7235e}{filename}
+\item 
+std\-::string \hyperlink{classParallelScheduler_a76e34b4f290c1c4ad68ea3b5429c0ba4}{queue\-\_\-name}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class modeling a parallel scheduler. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classParallelScheduler_a11e91f323808008a8a35961aa84211bf}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!Parallel\-Scheduler@{Parallel\-Scheduler}}
+\index{Parallel\-Scheduler@{Parallel\-Scheduler}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{Parallel\-Scheduler}]{\setlength{\rightskip}{0pt plus 5cm}Parallel\-Scheduler\-::\-Parallel\-Scheduler (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{queue\-\_\-name, }
+\item[{std\-::string}]{filename, }
+\item[{int}]{ncores}
+\end{DoxyParamCaption}
+)}}\label{classParallelScheduler_a11e91f323808008a8a35961aa84211bf}
+
+
+Parallel scheduler class constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue\-\_\-name} & the name of the message queue \\
+\hline
+{\em filename} & name of the file which will be opened as the stream file\-\_\-logs \\
+\hline
+{\em ncores} & number of cores available for the scheduler \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParallelScheduler_a995351f4556a464e6c4a78e01cea583c}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!$\sim$\-Parallel\-Scheduler@{$\sim$\-Parallel\-Scheduler}}
+\index{$\sim$\-Parallel\-Scheduler@{$\sim$\-Parallel\-Scheduler}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{$\sim$\-Parallel\-Scheduler}]{\setlength{\rightskip}{0pt plus 5cm}Parallel\-Scheduler\-::$\sim$\-Parallel\-Scheduler (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classParallelScheduler_a995351f4556a464e6c4a78e01cea583c}
+
+
+Default parallel scheduler class destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classParallelScheduler_af52a8e359a4134fec49db090781caf8b}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!exist\-\_\-suitable\-\_\-core@{exist\-\_\-suitable\-\_\-core}}
+\index{exist\-\_\-suitable\-\_\-core@{exist\-\_\-suitable\-\_\-core}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{exist\-\_\-suitable\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}bool Parallel\-Scheduler\-::exist\-\_\-suitable\-\_\-core (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{cores\-\_\-load, }
+\item[{double}]{task\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classParallelScheduler_af52a8e359a4134fec49db090781caf8b}
+
+
+Method looking for a core which can handle the task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+{\em task\-\_\-load} & the task's load \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a core exists, false otherwise 
+\end{DoxyReturn}
+\hypertarget{classParallelScheduler_ad71e8b952aee7b123c612540564fa090}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!get\-\_\-core\-\_\-to\-\_\-assign@{get\-\_\-core\-\_\-to\-\_\-assign}}
+\index{get\-\_\-core\-\_\-to\-\_\-assign@{get\-\_\-core\-\_\-to\-\_\-assign}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{get\-\_\-core\-\_\-to\-\_\-assign}]{\setlength{\rightskip}{0pt plus 5cm}int Parallel\-Scheduler\-::get\-\_\-core\-\_\-to\-\_\-assign (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector\-Tasks} \&}]{process\-\_\-list, }
+\item[{double}]{task\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classParallelScheduler_ad71e8b952aee7b123c612540564fa090}
+
+
+Main method looking for a core that can handle the task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em process\-\_\-list} & vector containing the tasks that which are assigned to a core \\
+\hline
+{\em task\-\_\-load} & the load of the task \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the core if there's one, -\/1 otherwise 
+\end{DoxyReturn}
+\hypertarget{classParallelScheduler_a7925556ff7ab1b4746a72709b24f157e}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!get\-\_\-cores\-\_\-load@{get\-\_\-cores\-\_\-load}}
+\index{get\-\_\-cores\-\_\-load@{get\-\_\-cores\-\_\-load}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{get\-\_\-cores\-\_\-load}]{\setlength{\rightskip}{0pt plus 5cm}void Parallel\-Scheduler\-::get\-\_\-cores\-\_\-load (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector\-Tasks} \&}]{process\-\_\-list, }
+\item[{std\-::vector$<$ double $>$ \&}]{cores\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classParallelScheduler_a7925556ff7ab1b4746a72709b24f157e}
+
+
+Method retrieving the load of each core and filling cores\-\_\-load with the data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em process\-\_\-list} & vector containing the tasks which are assigned to a core \\
+\hline
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParallelScheduler_ad58ae6d78d6920e548d7c6c956fa3caa}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!get\-\_\-less\-\_\-loaded\-\_\-core@{get\-\_\-less\-\_\-loaded\-\_\-core}}
+\index{get\-\_\-less\-\_\-loaded\-\_\-core@{get\-\_\-less\-\_\-loaded\-\_\-core}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{get\-\_\-less\-\_\-loaded\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}int Parallel\-Scheduler\-::get\-\_\-less\-\_\-loaded\-\_\-core (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{cores\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classParallelScheduler_ad58ae6d78d6920e548d7c6c956fa3caa}
+
+
+Method looking for the less loaded core. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the less loaded core 
+\end{DoxyReturn}
+\hypertarget{classParallelScheduler_a3a3bd8e72a7dbc83986cf31918569fd3}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!get\-\_\-unloaded\-\_\-core@{get\-\_\-unloaded\-\_\-core}}
+\index{get\-\_\-unloaded\-\_\-core@{get\-\_\-unloaded\-\_\-core}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{get\-\_\-unloaded\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}int Parallel\-Scheduler\-::get\-\_\-unloaded\-\_\-core (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{cores\-\_\-load}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classParallelScheduler_a3a3bd8e72a7dbc83986cf31918569fd3}
+
+
+Method looking for an unloaded core and returning its index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cores\-\_\-load} & vector containing the load of each core \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the unloaded core or -\/1 if no core 
+\end{DoxyReturn}
+\hypertarget{classParallelScheduler_aef0d5f1091857170434687897d19843e}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!start@{start}}
+\index{start@{start}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}void Parallel\-Scheduler\-::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classParallelScheduler_aef0d5f1091857170434687897d19843e}
+
+
+This method starts the scheduler in parallel mode. 
+
+
+
+Implements \hyperlink{classScheduler_aaa8fed2f8fab3a5c0e5d1d462915e415}{Scheduler}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classParallelScheduler_a5cd72cd536a5183e04b922fa2eb7235e}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!filename@{filename}}
+\index{filename@{filename}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{filename}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Parallel\-Scheduler\-::filename\hspace{0.3cm}{\ttfamily [private]}}}\label{classParallelScheduler_a5cd72cd536a5183e04b922fa2eb7235e}
+ame of the file which will be opened as the stream file\-\_\-logs \hypertarget{classParallelScheduler_a76e34b4f290c1c4ad68ea3b5429c0ba4}{\index{Parallel\-Scheduler@{Parallel\-Scheduler}!queue\-\_\-name@{queue\-\_\-name}}
+\index{queue\-\_\-name@{queue\-\_\-name}!ParallelScheduler@{Parallel\-Scheduler}}
+\subsubsection[{queue\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Parallel\-Scheduler\-::queue\-\_\-name\hspace{0.3cm}{\ttfamily [private]}}}\label{classParallelScheduler_a76e34b4f290c1c4ad68ea3b5429c0ba4}
+Name of the queue 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\-Scheduler/\hyperlink{ParallelScheduler_8h}{Parallel\-Scheduler.\-h}\item 
+src/\-Scheduler/\hyperlink{ParallelScheduler_8cpp}{Parallel\-Scheduler.\-cpp}\end{DoxyCompactItemize}

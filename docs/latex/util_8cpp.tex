@@ -1,0 +1,355 @@
+\hypertarget{util_8cpp}{\section{src/util/util.cpp File Reference}
+\label{util_8cpp}\index{src/util/util.\-cpp@{src/util/util.\-cpp}}
+}
+
+
+Util class definition (functions printing a message)  
+
+
+{\ttfamily \#include \char`\"{}util.\-h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{util_8cpp_aba965b4acabc843f67164ad4e3f6a2cd}{print\-\_\-process\-\_\-handled} (std\-::ostream \&stream, \hyperlink{structtask}{task} \&\-\_\-task, pid\-\_\-t pid, int core, int mseconds)
+\begin{DoxyCompactList}\small\item\em Print a message saying the process has been handled (execution finshed) \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_a452dc6f094022a51920eb86ee566c31b}{print\-\_\-process\-\_\-sent} (std\-::ostream \&stream, int pid, int core)
+\begin{DoxyCompactList}\small\item\em Print a message saying the task has been sent to a core. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_abff0063d5d00f4e90a5a3a3d25b9877c}{print\-\_\-cores\-\_\-load} (std\-::ostream \&stream, const std\-::vector$<$ double $>$ \&cores\-\_\-load)
+\begin{DoxyCompactList}\small\item\em Print a message displaying the load of each core. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_ae24a2f1ae12b4977823ac967a0963c20}{print\-\_\-process\-\_\-incoming} (std\-::ostream \&stream, \hyperlink{structtask}{task} \&\-\_\-task)
+\begin{DoxyCompactList}\small\item\em Print a message saying a process just arrived. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_aae3fcc4d302f0cd3652b591334f52604}{print\-\_\-process\-\_\-killed\-\_\-timeout} (std\-::ostream \&stream, pid\-\_\-t pid, \hyperlink{structtask}{task} \&\-\_\-task)
+\begin{DoxyCompactList}\small\item\em Print a message saying the task has been killed because of the timeout. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_a8393f280f4ba0c582561024fca5484d6}{print\-\_\-no\-\_\-core\-\_\-available} (std\-::ostream \&stream)
+\begin{DoxyCompactList}\small\item\em Print a message saying there is no core available to assign a task. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_afe02d6261b06e237ab0ffc8b1b2cdcad}{print\-\_\-set\-\_\-affinity\-\_\-error} (std\-::ostream \&stream)
+\begin{DoxyCompactList}\small\item\em Print a message saying there was an affinity error. The task has been sent to an incorrect core number. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_adda2f207df272eb2ab0cf57eb7559e24}{print\-\_\-searching\-\_\-unloaded\-\_\-core} (std\-::ostream \&stream)
+\begin{DoxyCompactList}\small\item\em Print a message saying the scheduler is looking for an unloaded core. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_a71efd1de3f1e08f52620b54d4fa04a34}{print\-\_\-no\-\_\-unloaded\-\_\-core\-\_\-found} (std\-::ostream \&stream)
+\begin{DoxyCompactList}\small\item\em Print a message saying the scheduler didn't find an unloaded core. \end{DoxyCompactList}\item 
+void \hyperlink{util_8cpp_a381884c2ef67afb7f4039cae1c6a4d89}{print\-\_\-cannot\-\_\-open\-\_\-stream} ()
+\begin{DoxyCompactList}\small\item\em Print a message saying there was an error when trying to open the file stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Util class definition (functions printing a message) \begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+
+\subsection{Function Documentation}
+\hypertarget{util_8cpp_a381884c2ef67afb7f4039cae1c6a4d89}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-cannot\-\_\-open\-\_\-stream@{print\-\_\-cannot\-\_\-open\-\_\-stream}}
+\index{print\-\_\-cannot\-\_\-open\-\_\-stream@{print\-\_\-cannot\-\_\-open\-\_\-stream}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-cannot\-\_\-open\-\_\-stream}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-cannot\-\_\-open\-\_\-stream (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_a381884c2ef67afb7f4039cae1c6a4d89}
+
+
+Print a message saying there was an error when trying to open the file stream. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+\hypertarget{util_8cpp_abff0063d5d00f4e90a5a3a3d25b9877c}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-cores\-\_\-load@{print\-\_\-cores\-\_\-load}}
+\index{print\-\_\-cores\-\_\-load@{print\-\_\-cores\-\_\-load}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-cores\-\_\-load}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-cores\-\_\-load (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream, }
+\item[{const std\-::vector$<$ double $>$ \&}]{cores\-\_\-load}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_abff0063d5d00f4e90a5a3a3d25b9877c}
+
+
+Print a message displaying the load of each core. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+{\em cores\-\_\-load} & list of each core's load \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_a8393f280f4ba0c582561024fca5484d6}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-no\-\_\-core\-\_\-available@{print\-\_\-no\-\_\-core\-\_\-available}}
+\index{print\-\_\-no\-\_\-core\-\_\-available@{print\-\_\-no\-\_\-core\-\_\-available}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-no\-\_\-core\-\_\-available}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-no\-\_\-core\-\_\-available (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_a8393f280f4ba0c582561024fca5484d6}
+
+
+Print a message saying there is no core available to assign a task. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_a71efd1de3f1e08f52620b54d4fa04a34}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-no\-\_\-unloaded\-\_\-core\-\_\-found@{print\-\_\-no\-\_\-unloaded\-\_\-core\-\_\-found}}
+\index{print\-\_\-no\-\_\-unloaded\-\_\-core\-\_\-found@{print\-\_\-no\-\_\-unloaded\-\_\-core\-\_\-found}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-no\-\_\-unloaded\-\_\-core\-\_\-found}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-no\-\_\-unloaded\-\_\-core\-\_\-found (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_a71efd1de3f1e08f52620b54d4fa04a34}
+
+
+Print a message saying the scheduler didn't find an unloaded core. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_aba965b4acabc843f67164ad4e3f6a2cd}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-process\-\_\-handled@{print\-\_\-process\-\_\-handled}}
+\index{print\-\_\-process\-\_\-handled@{print\-\_\-process\-\_\-handled}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-process\-\_\-handled}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-process\-\_\-handled (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream, }
+\item[{{\bf task} \&}]{\-\_\-task, }
+\item[{pid\-\_\-t}]{pid, }
+\item[{int}]{core, }
+\item[{int}]{mseconds}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_aba965b4acabc843f67164ad4e3f6a2cd}
+
+
+Print a message saying the process has been handled (execution finshed) 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+{\em \-\_\-task} & the task which will be write into the stream \\
+\hline
+{\em pid} & task's process id \\
+\hline
+{\em core} & core number which the task has been executed on \\
+\hline
+{\em mseconds} & duration of the task's execution \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_ae24a2f1ae12b4977823ac967a0963c20}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-process\-\_\-incoming@{print\-\_\-process\-\_\-incoming}}
+\index{print\-\_\-process\-\_\-incoming@{print\-\_\-process\-\_\-incoming}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-process\-\_\-incoming}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-process\-\_\-incoming (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream, }
+\item[{{\bf task} \&}]{\-\_\-task}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_ae24a2f1ae12b4977823ac967a0963c20}
+
+
+Print a message saying a process just arrived. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+{\em \-\_\-task} & reference to the task \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_aae3fcc4d302f0cd3652b591334f52604}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-process\-\_\-killed\-\_\-timeout@{print\-\_\-process\-\_\-killed\-\_\-timeout}}
+\index{print\-\_\-process\-\_\-killed\-\_\-timeout@{print\-\_\-process\-\_\-killed\-\_\-timeout}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-process\-\_\-killed\-\_\-timeout}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-process\-\_\-killed\-\_\-timeout (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream, }
+\item[{pid\-\_\-t}]{pid, }
+\item[{{\bf task} \&}]{\-\_\-task}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_aae3fcc4d302f0cd3652b591334f52604}
+
+
+Print a message saying the task has been killed because of the timeout. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+{\em pid} & task's process id \\
+\hline
+{\em \-\_\-task} & reference to the task \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_a452dc6f094022a51920eb86ee566c31b}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-process\-\_\-sent@{print\-\_\-process\-\_\-sent}}
+\index{print\-\_\-process\-\_\-sent@{print\-\_\-process\-\_\-sent}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-process\-\_\-sent}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-process\-\_\-sent (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream, }
+\item[{int}]{pid, }
+\item[{int}]{core}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_a452dc6f094022a51920eb86ee566c31b}
+
+
+Print a message saying the task has been sent to a core. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+{\em pid} & task's process id \\
+\hline
+{\em core} & core number which the task has been sent on \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_adda2f207df272eb2ab0cf57eb7559e24}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-searching\-\_\-unloaded\-\_\-core@{print\-\_\-searching\-\_\-unloaded\-\_\-core}}
+\index{print\-\_\-searching\-\_\-unloaded\-\_\-core@{print\-\_\-searching\-\_\-unloaded\-\_\-core}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-searching\-\_\-unloaded\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}print\-\_\-searching\-\_\-unloaded\-\_\-core (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_adda2f207df272eb2ab0cf57eb7559e24}
+
+
+Print a message saying the scheduler is looking for an unloaded core. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & reference to a stream \\
+\hline
+\end{DoxyParams}
+\hypertarget{util_8cpp_afe02d6261b06e237ab0ffc8b1b2cdcad}{\index{util.\-cpp@{util.\-cpp}!print\-\_\-set\-\_\-affinity\-\_\-error@{print\-\_\-set\-\_\-affinity\-\_\-error}}
+\index{print\-\_\-set\-\_\-affinity\-\_\-error@{print\-\_\-set\-\_\-affinity\-\_\-error}!util.cpp@{util.\-cpp}}
+\subsubsection[{print\-\_\-set\-\_\-affinity\-\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-set\-\_\-affinity\-\_\-error (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{stream}
+\end{DoxyParamCaption}
+)}}\label{util_8cpp_afe02d6261b06e237ab0ffc8b1b2cdcad}
+
+
+Print a message saying there was an affinity error. The task has been sent to an incorrect core number. 
+
+\begin{DoxyAuthor}{Author}
+Simon E\-S\-P\-I\-G\-O\-LÉ -\/ Teddy G\-I\-L\-B\-E\-R\-T -\/ Hugo L\-E\-G\-R\-A\-N\-D 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+01/04/2016 
+\end{DoxyDate}
+\begin{DoxyRemark}{Remarks}
+none 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & nombre d'arguments en entrée du programme \\
+\hline
+\end{DoxyParams}

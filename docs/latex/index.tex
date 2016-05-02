@@ -1,0 +1,48 @@
+\#\-Readme
+
+\subsection*{Documentation}
+
+A special Doxygen documentation has been written for this project. You can read it as html by going to {\ttfamily \$\-P\-R\-O\-J\-E\-C\-T\-\_\-\-R\-O\-O\-T/docs/html/index.html}. You can also build your own documentation using the latex sources at {\ttfamily \$\-P\-R\-O\-J\-E\-C\-T\-\_\-\-R\-O\-O\-T/docs/latex}.
+
+\subsection*{Prerequisite}
+
+In order to compile and run this project you must have installed on your computer the followings \-: C\-Make, Boost, Open\-M\-P \begin{DoxyVerb}# apt-get install cmake libboost-all-dev libopenmpi1.6
+\end{DoxyVerb}
+
+
+\subsection*{Compile sources}
+
+To compile sources, you will have to run the following lines \-: \begin{DoxyVerb}$ mkdir bin && cd bin && cmake .. && make
+\end{DoxyVerb}
+
+
+It will create a folder name 'bin', navigate to it, build the Makefile, and run the Makefile.
+
+\subsection*{Populating}
+
+Use -\/c or --client as argument on the scheduler's executable to start the client. It will populate the queue with your tasks. \begin{DoxyVerb}$ ./Scheduler -c
+\end{DoxyVerb}
+
+
+\subsection*{Scheduling}
+
+Use -\/s or --sequential to start the scheduler in sequential mode. Use -\/p or --parallel to start in parallel. \begin{DoxyVerb}$ ./Scheduler -s
+\end{DoxyVerb}
+
+
+\subsubsection*{Algorithm}
+
+\begin{DoxyVerb}TANT QUE non timeout FAIRE
+    -- Une nouvelle tâche arrive
+    SI aucun processeur ne peut contenir la tâche
+        Attendre qu'un processeur se libère
+    SINON
+        SI un processeur est vide (pas de tâches en cours)
+            lui attribuer automatiquement la tâche.
+        SINON
+            Récupérer le processeur le moins utilisé
+            Lui assigner la tâche
+        FINSI
+    FINSI
+FIN TQ\end{DoxyVerb}
+ 

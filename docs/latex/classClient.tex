@@ -1,0 +1,137 @@
+\hypertarget{classClient}{\section{Client Class Reference}
+\label{classClient}\index{Client@{Client}}
+}
+
+
+Class which defines a client sending tasks to a message queue.  
+
+
+
+
+{\ttfamily \#include $<$Client.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classClient_af7faf381e7062b0135ab53c35dbb5542}{Client} (std\-::string)
+\begin{DoxyCompactList}\small\item\em \hyperlink{classClient}{Client} class constructor. \end{DoxyCompactList}\item 
+\hyperlink{classClient_a840e519ca781888cbd54181572ebe3a7}{$\sim$\-Client} ()
+\begin{DoxyCompactList}\small\item\em Default destructor of the class. \end{DoxyCompactList}\item 
+void \hyperlink{classClient_a742373e08a80d993d2651b6fff76f5b9}{start} ()
+\begin{DoxyCompactList}\small\item\em This function starts the client. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classClient_a8d04b32a55421cf157bc9464bbad74f2}{send\-\_\-one\-\_\-process} ()
+\begin{DoxyCompactList}\small\item\em Method to send only one process to the queue. \end{DoxyCompactList}\item 
+void \hyperlink{classClient_a4f8c14b12c882c97401b4e3c7965678f}{send\-\_\-several\-\_\-processes} (unsigned)
+\begin{DoxyCompactList}\small\item\em Method to send several processes to the queue. \end{DoxyCompactList}\item 
+int \hyperlink{classClient_a4a2730dfdf3e84352f79ad85f5306346}{send\-\_\-file\-\_\-processes} ()
+\begin{DoxyCompactList}\small\item\em Method to send several processes which are defined in a J\-S\-O\-N file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \hyperlink{classClient_a1585f1f50fcd89691a51031bb11fc36b}{queue\-\_\-name}
+\item 
+boost\-::interprocess\-::message\-\_\-queue \hyperlink{classClient_ae2045b846aa7287f54e151671a8dd831}{queue}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class which defines a client sending tasks to a message queue. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classClient_af7faf381e7062b0135ab53c35dbb5542}{\index{Client@{Client}!Client@{Client}}
+\index{Client@{Client}!Client@{Client}}
+\subsubsection[{Client}]{\setlength{\rightskip}{0pt plus 5cm}Client\-::\-Client (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{queue\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{classClient_af7faf381e7062b0135ab53c35dbb5542}
+
+
+\hyperlink{classClient}{Client} class constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue\-\_\-name} & the name of the queue \\
+\hline
+\end{DoxyParams}
+\hypertarget{classClient_a840e519ca781888cbd54181572ebe3a7}{\index{Client@{Client}!$\sim$\-Client@{$\sim$\-Client}}
+\index{$\sim$\-Client@{$\sim$\-Client}!Client@{Client}}
+\subsubsection[{$\sim$\-Client}]{\setlength{\rightskip}{0pt plus 5cm}Client\-::$\sim$\-Client (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classClient_a840e519ca781888cbd54181572ebe3a7}
+
+
+Default destructor of the class. 
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classClient_a4a2730dfdf3e84352f79ad85f5306346}{\index{Client@{Client}!send\-\_\-file\-\_\-processes@{send\-\_\-file\-\_\-processes}}
+\index{send\-\_\-file\-\_\-processes@{send\-\_\-file\-\_\-processes}!Client@{Client}}
+\subsubsection[{send\-\_\-file\-\_\-processes}]{\setlength{\rightskip}{0pt plus 5cm}int Client\-::send\-\_\-file\-\_\-processes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classClient_a4a2730dfdf3e84352f79ad85f5306346}
+
+
+Method to send several processes which are defined in a J\-S\-O\-N file. 
+
+\hypertarget{classClient_a8d04b32a55421cf157bc9464bbad74f2}{\index{Client@{Client}!send\-\_\-one\-\_\-process@{send\-\_\-one\-\_\-process}}
+\index{send\-\_\-one\-\_\-process@{send\-\_\-one\-\_\-process}!Client@{Client}}
+\subsubsection[{send\-\_\-one\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}void Client\-::send\-\_\-one\-\_\-process (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classClient_a8d04b32a55421cf157bc9464bbad74f2}
+
+
+Method to send only one process to the queue. 
+
+\hypertarget{classClient_a4f8c14b12c882c97401b4e3c7965678f}{\index{Client@{Client}!send\-\_\-several\-\_\-processes@{send\-\_\-several\-\_\-processes}}
+\index{send\-\_\-several\-\_\-processes@{send\-\_\-several\-\_\-processes}!Client@{Client}}
+\subsubsection[{send\-\_\-several\-\_\-processes}]{\setlength{\rightskip}{0pt plus 5cm}void Client\-::send\-\_\-several\-\_\-processes (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{nb\-\_\-processes}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classClient_a4f8c14b12c882c97401b4e3c7965678f}
+
+
+Method to send several processes to the queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Number} & of processes to send \\
+\hline
+\end{DoxyParams}
+\hypertarget{classClient_a742373e08a80d993d2651b6fff76f5b9}{\index{Client@{Client}!start@{start}}
+\index{start@{start}!Client@{Client}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}void Client\-::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classClient_a742373e08a80d993d2651b6fff76f5b9}
+
+
+This function starts the client. 
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classClient_ae2045b846aa7287f54e151671a8dd831}{\index{Client@{Client}!queue@{queue}}
+\index{queue@{queue}!Client@{Client}}
+\subsubsection[{queue}]{\setlength{\rightskip}{0pt plus 5cm}boost\-::interprocess\-::message\-\_\-queue Client\-::queue\hspace{0.3cm}{\ttfamily [private]}}}\label{classClient_ae2045b846aa7287f54e151671a8dd831}
+Queue \hypertarget{classClient_a1585f1f50fcd89691a51031bb11fc36b}{\index{Client@{Client}!queue\-\_\-name@{queue\-\_\-name}}
+\index{queue\-\_\-name@{queue\-\_\-name}!Client@{Client}}
+\subsubsection[{queue\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Client\-::queue\-\_\-name\hspace{0.3cm}{\ttfamily [private]}}}\label{classClient_a1585f1f50fcd89691a51031bb11fc36b}
+Queue\-\_\-name 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\-Client/\hyperlink{Client_8h}{Client.\-h}\item 
+src/\-Client/\hyperlink{Client_8cpp}{Client.\-cpp}\end{DoxyCompactItemize}
