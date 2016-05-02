@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Main declaration
+\brief      Main declaration file of the whole program
 \remarks    none
 */
 #ifndef PROJETGSI_MAIN_H
@@ -27,11 +27,11 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version 	0.1
 \date       01/04/2016
-\brief 		Lancement du programme en fonction des arguments entrée par l'utilisateur
+\brief 		Main function of the whole program. Start either the client or the scheduler.
 \remarks	none
-\param 		argc nombre d'arguments en entrée du programme
-\param 		argv valeurs des arguments en entrée du programme
-\return 	0 si tout va bien
+\param 		argc Number of arguments
+\param 		argv Values of the arguments
+\return 	ERROR_IN_CMD_LINE if the command line can't be parsed.
 */
 int main(int argc, char **argv);
 

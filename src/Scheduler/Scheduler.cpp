@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Scheduler class
+\brief      Scheduler definition class
 \remarks    none
 */
 #include <iostream>

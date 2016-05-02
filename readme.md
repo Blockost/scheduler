@@ -1,4 +1,9 @@
-#Readme 
+#Readme
+
+## Documentation
+
+A special Doxygen documentation has been written for this project. You can read it as html by going to `$PROJECT_ROOT/docs/html/index.html`.
+You can also build your own documentation using the latex sources at `$PROJECT_ROOT/docs/latex`.
 
 ## Prerequisite
 
@@ -22,7 +27,7 @@ Use -c or --client as argument on the scheduler's executable to start the client
 
 ## Scheduling
 
-Use -s or --sequential to start the scheduler in sequential mode. User -p or --parallel to start in parallel.
+Use -s or --sequential to start the scheduler in sequential mode. Use -p or --parallel to start in parallel.
 
     $ ./Scheduler -s
 

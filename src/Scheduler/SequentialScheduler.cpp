@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Sequential scheduler class
+\brief      Sequential scheduler definition class
 \remarks    none
 */
 #include "SequentialScheduler.h"
@@ -180,15 +180,16 @@ void SequentialScheduler::start() {
                     // Process that contains the command
                     if (exec == 0) {
                         setpgid(getpid(), getpid());
-                        std::system(command.c_str());
-                        boost::posix_time::time_duration duration =
-                                boost::posix_time::second_clock::local_time() - start;
-                        // Tell how good was that ephemeral life...
-                        {
-                            scoped_lock<file_lock> fs_lock(f_lock);
-                            print_process_handled(file_logs, _task, getppid(), core, duration.total_milliseconds());
+                        if (std::system(command.c_str())) {
+                            boost::posix_time::time_duration duration =
+                                    boost::posix_time::second_clock::local_time() - start;
+                            // Tell how good was that ephemeral life...
+                            {
+                                scoped_lock<file_lock> fs_lock(f_lock);
+                                print_process_handled(file_logs, _task, getppid(), core, duration.total_milliseconds());
+                            }
+                            exit(EXIT_SUCCESS);
                         }
-                        exit(EXIT_SUCCESS);
                     } else {
                         sleep(_task.timeout);
                         pid_t result = waitpid(exec, &status, WNOHANG);

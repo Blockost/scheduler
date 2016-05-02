@@ -14,25 +14,25 @@
 #include "termcolor/termcolor.hpp"
 
 /*! \struct     task
-*               Structure pour la manipulation de nombre complexe algébrique
-* \remarks      Les nombres sont sous la forme \f$a+ib \f$
+*               Structure allowing to manipulate complex data type: a task.
+* \remarks      none
 */
 struct task {
-    unsigned timeout = 0;   /*!< Timemout */
-    float load = 0;         /*!< Load */
-    int num_cpu = -1;       /*!< Num_cpu */
-    unsigned priority = 0;  /*!< Priority */
-    char command[255];      /*!< Command */
+    unsigned timeout = 0;
+    /*!< Timemout: number of seconds to wait before killing the task*/
+    float load = 0;
+    /*!< Load: define the cpu load the task will take*/
+    int num_cpu = -1;
+    /*!< Num_cpu: cpu index which the task is assigned on */
+    unsigned priority = 0;
+    /*!< Priority: define task's weight */
+    char command[255];      /*!< Command: define the command which will be executed by the processor handling the task*/
 
     /*!
-     *  \brief      Ajout d'un morceau
-     *
-     *              Methode qui permet d'ajouter un morceau a liste de
-     *              lecture
-     *
-     *  \param      left : le morceau a ajouter
-     *  \param      right : le morceau a ajouter
-     *  \return     true si morceau deja present dans la liste, false sinon
+     *  \brief      Overload the equal operator for comparison
+     *  \param      left: first task
+     *  \param      right: second task
+     *  \return     true if tasks are the same, false otherwise
      */
     friend bool operator==(const task &left, const task &right){
         return left.timeout == right.timeout &&
@@ -42,14 +42,9 @@ struct task {
     }
 
     /*!
-     *  \brief      Ajout d'un morceau
-     *
-     *              Methode qui permet d'ajouter un morceau a liste de
-     *              lecture
-     *
-     *  \param      out : le morceau a ajouter
-     *  \param      _task : le morceau a ajouter
-     *  \return     true si morceau deja present dans la liste, false sinon
+     *  \brief      Overload the stream redirection
+     *  \param      out: stream reference
+     *  \param      _task : reference to the task that will be write into the stream
      */
     friend std::ostream &operator<<(std::ostream &out, const task &_task) {
         // Check if the stream is stdout or not

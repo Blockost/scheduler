@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Scheduler class declaration
+\brief      Scheduler declaration class
 \remarks    none
 */
 
@@ -16,34 +16,25 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 
 /*!\class   Scheduler
- * \brief   classe representant le lecteur
- *
- *          La classe gere la lecture d'une liste de morceaux
+ * \brief   This is the base class for the scheduler. Only called by subclass constructor
  */
 class Scheduler {
 
 private:
-    int ncores;                         /*!< Number of cores */
+    int ncores;                         /*!< Number of cores available for the scheduler */
 
 protected:
-    std::fstream file_logs;             /*!< File_logs */
-    std::vector<double> cores_load;     /*!< Cores_load */
+    std::fstream file_logs;
+    /*!< Stream to a local file. Used to write the scheduler's logs */
+    std::vector<double> cores_load;     /*!< vector containing each core's load*/
 
     /*!
-     *  \brief      Ajout d'un morceau
-     *
-     *              Methode qui permet d'ajouter un morceau a liste de
-     *              lecture
-     *
-     */
+     *  \brief      Method initializing each core's load to 0
+    */
     void initCores();
 
     /*!
-     *  \brief      Ajout d'un morceau
-     *
-     *              Methode qui permet d'ajouter un morceau a liste de
-     *              lecture
-     *
+     *  \brief      Pure virtual method. Will be implemented by the subclasses and never called.
      */
     virtual void start() = 0;
 
@@ -51,19 +42,14 @@ protected:
 public:
 
     /*!
-     *  \brief      Constructeur
-     *
-     *              Constructeur de la classe CPlayer
-     *
-     *  \param      filename : liste initial des morceaux
-     *  \param      ncores : liste initial des morceaux
+     *  \brief      Scheduler class constructor
+     *  \param      filename name of the file which will be opened as the stream file_logs
+     *  \param      ncores number of cores available for the scheduler
      */
     Scheduler(std::string, int);
 
     /*!
-     *  \brief      Destructeur
-     *
-     *              Destructeur de la classe CPlayer
+     *  \brief      Default scheduler destructor
      */
     virtual ~Scheduler();
 

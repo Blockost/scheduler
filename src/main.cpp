@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Main
+\brief      Main definition file of the whole program
 \remarks    none
 */
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 
     int ncores = omp_get_num_procs();
 
-    // Define all available options
+    // Define all the options available
     desc.add_options()
             ("help,h", "Print this help message")
             ("client,c", "Start the client to populate the queue")

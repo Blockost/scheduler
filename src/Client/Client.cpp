@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Client class
+\brief      Client definition class. Send processes to the queue
 \remarks    none
 */
 #include "Client.h"
@@ -158,7 +158,7 @@ void Client::start() {
             std::cout << "1: Send 1 process" << std::endl;
             std::cout << "2: Send 3 processes with random attributes" << std::endl;
             std::cout << "3: Send processes from a JSON file" << std::endl;
-            std::cout << "4: stop client" << std::endl;
+            std::cout << "4: Stop the client" << std::endl;
             std::cin >> choice;
             try {
                 boost::lexical_cast<int>(choice);

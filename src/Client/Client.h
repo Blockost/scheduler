@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Client class declaration
+\brief      Client declaration class
 \remarks    none
 */
 #ifndef PROJETGSI_CLIENT_H
@@ -18,9 +18,7 @@
 #include <boost/optional/optional.hpp>
 
 /*!\class   Client
- * \brief   classe representant le lecteur
- *
- *          La classe gere la lecture d'une liste de morceaux
+ * \brief   Class which defines a client sending tasks to a message queue.
  */
 class Client {
 
@@ -29,52 +27,36 @@ private:
     boost::interprocess::message_queue queue;   /*!< Queue */
 
     /*!
-     *\brief        Ajout d'un morceau
-     *
-     *              Methode qui permet d'ajouter un morceau a liste de
-     *              lecture
+     *\brief        Method to send only one process to the queue
      */
     void send_one_process();
 
     /*!
-     *\brief        Ajout d'un morceau
-     *
-     *              Methode qui permet d'ajouter un morceau a liste de
-     *              lecture
-     *\param        nb_processes
+     *\brief        Method to send several processes to the queue
+     *\param        Number of processes to send
      */
     void send_several_processes(unsigned);
 
     /*!
-     *\brief        Ajout d'un morceau
-     *
-     *              Methode qui permet d'ajouter un morceau a liste de
-     *              lecture
-     *\return       int
+     *\brief        Method to send several processes which are defined in a JSON file
      */
     int send_file_processes();
 
 public:
 
     /*!
-     *\brief        Destructeur
-     *
-     *              Destructeur de la classe CPlayer
-     *\param        queue_name
+     *\brief        Client class constructor
+     *\param        queue_name the name of the queue
      */
     Client(std::string);
 
     /*!
-     *\brief        Destructeur
-     *
-     *              Destructeur de la classe CPlayer
+     *\brief        Default destructor of the class
      */
     ~Client();
 
     /*!
-     *\brief        Destructeur
-     *
-     *              Destructeur de la classe CPlayer
+     *\brief        This function starts the client
      */
     void start();
 };

@@ -3,7 +3,7 @@
 \author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
 \version    0.1
 \date       01/04/2016
-\brief      Util class
+\brief      Util class definition (functions printing a message)
 \remarks    none
 */
 
