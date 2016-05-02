@@ -7,7 +7,6 @@ namespace pt = boost::property_tree; // Short alias for this namespace
 Client::Client(std::string queue_name) :
         queue_name{queue_name},
         queue{open_or_create, queue_name.c_str(), 1000, sizeof(task)} {
-
 }
 
 
@@ -18,16 +17,16 @@ Client::~Client() {
 
 
 void Client::send_one_process() {
-    unsigned u_duration, u_priority;
+    int u_timeout, u_priority;
     float f_load;
-    std::string duration, load, priority, command, tmp;
+    std::string timeout, load, priority, command, tmp;
 
     std::cout << "--- Sending a new process to the queue ---" << std::endl;
     std::cout << "Command to execute (bash): $ ";
     getline(std::cin, tmp); // need for flushing
     getline(std::cin, command);
     std::cout << "Process timeout (> 0): ";
-    std::cin >> duration;
+    std::cin >> timeout;
     std::cout << "Process load (0 <= load <= 1): ";
     std::cin >> load;
     std::cout << "Process priority (1: Low, 2: Normal, 3: High): ";
@@ -36,17 +35,17 @@ void Client::send_one_process() {
 
     try {
         /* It's "verifying user inputs" time ...! */
-        u_duration = boost::lexical_cast<unsigned>(duration);
+        u_timeout = boost::lexical_cast<int>(timeout);
         f_load = boost::lexical_cast<float>(load);
-        u_priority = boost::lexical_cast<unsigned>(priority);
-        if (u_duration == 0 || f_load > 1 || (u_priority != 1 && u_priority != 2 && u_priority != 3))
+        u_priority = boost::lexical_cast<int>(priority);
+        if (u_timeout <= 0 || (f_load <0 && f_load > 1) || (u_priority != 1 && u_priority != 2 && u_priority != 3))
             throw boost::bad_lexical_cast();
 
         // If cast was successful
         task _task;
-        _task.timeout = u_duration;
+        _task.timeout = (unsigned) u_timeout;
         _task.load = f_load;
-        _task.priority = u_priority;
+        _task.priority = (unsigned) u_priority;
         strncpy(_task.command, command.c_str(), 255);
 
         try {
@@ -68,11 +67,10 @@ void Client::send_several_processes(unsigned nb_processes) {
     char array[255] = "sleep 3 && echo \"This is a command \"";
     for (unsigned i = 0; i < nb_processes; ++i) {
         task _task;
-        _task.timeout = (rand() % 11) + 1;
+        _task.timeout = (unsigned) (rand() % 11) + 1;
         _task.load = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        _task.priority = round(rand() % 3 + 1); // génère une priorité entre 1 et 3.
+        _task.priority = (unsigned) round(rand() % 3 + 1); // priority between 1 and 3
         strncpy(_task.command, array, 255);
-        std::cout << "created : " << _task << std::endl;
         if (queue.try_send(&_task, sizeof(task), _task.priority)) {
             std::cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << std::endl;
         } else {
@@ -90,6 +88,8 @@ int Client::send_file_processes(){
     pt::ptree root; // Create a root
     std::string tmp, path;
     task _task;
+    int timeout, priority;
+    float load;
 
     std::cout << "--- Enter the path of json file  ---" << std::endl;
     std::cin >> path;
@@ -98,8 +98,6 @@ int Client::send_file_processes(){
     {
         pt::read_json(path, root); // file path
 
-        // A vector to allow storing our task
-        std::vector<task> taks;
 
         // Iterator over all task
         for (pt::ptree::value_type &list_task : root)
@@ -107,15 +105,25 @@ int Client::send_file_processes(){
             empty=false;
             tmp = list_task.second.get<std::string>("command",array); // default array
             strncpy(_task.command,tmp.c_str(),255);
-            _task.timeout = list_task.second.get<unsigned>("timeout",(rand() % 11) + 1); // default (rand() % 11) + 1)
-            _task.load = list_task.second.get<float>("load", static_cast <float> (rand()) / static_cast <float> (RAND_MAX)); // default static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
-            _task.priority = list_task.second.get<unsigned>("priority",round(rand() % 3 + 1)); // default round(rand() % 3 + 1)
+            timeout = list_task.second.get<int>("timeout",(rand() % 11) + 1); // default (rand() % 11) + 1)
+            load = list_task.second.get<float>("load", static_cast <float> (rand()) / static_cast <float> (RAND_MAX)); // default static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
+            priority = list_task.second.get<int>("priority",round(rand() % 3 + 1)); // default round(rand() % 3 + 1)
 
-            std::cout << "created : " << _task << std::endl;
+            if (timeout <0 || (priority <0 && priority>3) || (load<0 && load>1))
+            {
+                std::cout << termcolor::red << "Task cannot be created. Verify your json file."
+                << termcolor::reset << std::endl;
+                return ERROR_WRONG_JSON_STRUCTURE;
+            }else{
+                _task.timeout=(unsigned)timeout;
+                _task.load=load;
+                _task.priority=(unsigned)priority;
+            }
+
             if (queue.try_send(&_task, sizeof(task), _task.priority)) {
-            std::cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << std::endl;
+                std::cout << termcolor::green << "Task successfully sent to the queue !" << termcolor::reset << std::endl;
             } else {
-            std::cout << termcolor::red << "Task not sent... Queue is full !" << termcolor::reset << std::endl;
+                std::cout << termcolor::red << "Task not sent... Queue is full !" << termcolor::reset << std::endl;
             }
         }
 

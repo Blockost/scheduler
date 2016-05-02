@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
-project(ProjetGSI)
+project(Scheduler)
 
 # Add directories to find BOOST
 #set(BOOST_INCLUDEDIR /usr/lib/x86_64-linux-gnu/)
