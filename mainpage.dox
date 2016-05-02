@@ -1,15 +1,31 @@
 /**
 \mainpage The mainpage documentation
 
-# Readme 
+## Prerequisite
 
-## Populating 
+In order to compile and run this project you must have installed on your computer the followings : CMake, Boost, OpenMP
+
+    # apt-get install cmake libboost-all-dev libopenmpi1.6
+
+## Compile sources
+
+To compile sources, you will have to run the following lines :
+
+    $ mkdir bin && cd bin && cmake .. && make
+
+It will create a folder name 'bin', navigate to it, build the Makefile, and run the Makefile.
+
+## Populating
 
 Use -c or --client as argument on the scheduler's executable to start the client. It will populate the queue with your tasks.
 
+    $ ./Scheduler -c
+
 ## Scheduling
 
-User -s or --sequential to start the scheduler in sequential mode. User -p or --parallel to start in parallel.
+Use -s or --sequential to start the scheduler in sequential mode. User -p or --parallel to start in parallel.
+
+    $ ./Scheduler -s
 
 ### Algorithm
 
