@@ -1,3 +1,4 @@
+#include <omp.h>
 #include "main.h"
 
 namespace po = boost::program_options;
@@ -9,6 +10,8 @@ int main(int argc, char **argv) {
 
     std::string queue_name = "scheduler_queue";
     std::string filepath = "logs";
+
+    int ncores = omp_get_num_procs();
 
     // Define all available options
     desc.add_options()
@@ -28,11 +31,6 @@ int main(int argc, char **argv) {
             std::cout << desc;
         }
 
-
-        if (vm.count(",f")) {
-            vm.notify();
-        }
-
         /* Launch the client */
         if (vm.count("client")) {
             Client client{queue_name};
@@ -42,13 +40,13 @@ int main(int argc, char **argv) {
 
         /* Launch sched in sequential mode */
         if (vm.count("sequential")) {
-            SequentialScheduler seq_sched{queue_name, filepath};
+            SequentialScheduler seq_sched{queue_name, filepath, ncores};
             seq_sched.start();
         }
 
         /* Launch sched in parallel mode */
         if (vm.count("parallel")) {
-            ParallelScheduler parallel_sched{queue_name, filepath};
+            ParallelScheduler parallel_sched{queue_name, filepath, ncores};
             parallel_sched.start();
         }
 

@@ -30,31 +30,15 @@ void print_process_sent(std::ostream &stream, int pid, int core) {
 }
 
 
-void print_cores_load(std::ostream &stream, const double cores_load[4]) {
-    for (unsigned i = 0; i < 4; ++i) {
-        if (cores_load[i]>1)
-        {
-            std::cout << "cpu" << i << ": "
-            << cores_load[i] << "; ";
+void print_cores_load(std::ostream &stream, const std::vector<double> &cores_load) {
 
-            std::cout << "SUPERIEUR A 1 !!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-
-            char var=0;
-
-            //tant que l'utilisateur n'a pas taper sur entrer on continue..
-            while(var == 0)
-            {
-                std::cout << std::endl << "appuyer sur entrer pour continuer.." << std::endl;
-                std::cin >> var;
-            }
-        }else{
-            std::cout << "cpu" << i << ": "
-            << cores_load[i] << "; ";
-        }
-
+    std::cout << cores_load.size() << std::endl;
+    for (unsigned i = 0; i < cores_load.size(); ++i) {
+        std::cout << "cpu" << i << ": "
+        << cores_load[i] << "; ";
     }
     std::cout << std::endl;
-    for (unsigned i = 0; i < 4; ++i) {
+    for (unsigned i = 0; i < cores_load.size(); ++i) {
         stream << "cpu" << i << ": "
         << cores_load[i] << "; ";
     }

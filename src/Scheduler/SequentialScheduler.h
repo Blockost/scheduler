@@ -7,8 +7,9 @@
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <sys/wait.h>
+#include <omp.h>
 #include "Scheduler.h"
-#include "../task.h"
+#include "../util/task.h"
 #include "../util/util.h"
 
 
@@ -23,18 +24,18 @@ private:
     std::string filename;
     std::string queue_name;
 
-    int get_unloaded_core(const double[]);
+    int get_unloaded_core(const std::vector<double> &);
 
-    int get_less_loaded_core(const double[]);
+    int get_less_loaded_core(const std::vector<double> &);
 
-    bool exist_suitable_core(const double[], double);
+    bool exist_suitable_core(const std::vector<double> &, double);
 
-    void get_cores_load(const VectorTasks &, double*);
+    void get_cores_load(const VectorTasks &, std::vector<double> &);
 
     int get_core_to_assign(const VectorTasks &, double);
 
 public:
-    SequentialScheduler(const std::string &, const std::string &);
+    SequentialScheduler(const std::string &, const std::string &, int);
 
     virtual ~SequentialScheduler();
 

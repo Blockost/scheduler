@@ -2,14 +2,14 @@
 #define PROJETGSI_UTIL_H
 
 #include "../main.h"
-#include "../task.h"
+#include "task.h"
 #include <fstream>
 
 void print_process_handled(std::ostream &, task &, pid_t, int, int);
 
 void print_process_sent(std::ostream &, int, int);
 
-void print_cores_load(std::ostream &, const double[]);
+void print_cores_load(std::ostream &, const std::vector<double> &);
 
 void print_process_incoming(std::ostream &, task &);
 

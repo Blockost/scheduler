@@ -15,22 +15,23 @@ private:
     std::string filename;
     std::string queue_name;
 
-    int get_unloaded_core(const double[]);
+    int get_unloaded_core(const std::vector<double> &);
 
-    int get_less_loaded_core(const double[]);
+    int get_less_loaded_core(const std::vector<double> &);
 
-    bool exist_suitable_core(const double[], double);
+    bool exist_suitable_core(const std::vector<double> &, double);
 
-    void get_cores_load(const VectorTasks &, double[]);
+    void get_cores_load(const VectorTasks &, std::vector<double> &);
 
     int get_core_to_assign(const VectorTasks &, double);
 
 public:
-    ParallelScheduler(std::string, std::string);
+    ParallelScheduler(std::string, std::string, int);
 
     virtual ~ParallelScheduler();
 
     virtual void start();
+
 };
 
 

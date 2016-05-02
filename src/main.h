@@ -8,8 +8,8 @@
 #include "termcolor/termcolor.hpp"
 #include "boost/program_options.hpp"
 /* Project libraries */
-#include "flags.h"
-#include "task.h"
+#include "util/flags.h"
+#include "util/task.h"
 #include "Scheduler/SequentialScheduler.h"
 #include "Scheduler/ParallelScheduler.h"
 #include "Client/Client.h"

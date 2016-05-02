@@ -14,7 +14,7 @@ link_directories(${Boost_INCLUDE_DIRS})
 find_package(OpenMP REQUIRED)
 
 # Add source files to exec
-set(SOURCE_FILES src/main.cpp src/flags.h include/termcolor/termcolor.hpp src/main.h src/task.h src/util/util.cpp src/util/util.h
+set(SOURCE_FILES src/main.cpp src/util/flags.h include/termcolor/termcolor.hpp src/main.h src/util/task.h src/util/util.cpp src/util/util.h
         src/Scheduler/Scheduler.cpp src/Scheduler/Scheduler.h src/Scheduler/SequentialScheduler.cpp src/Scheduler/SequentialScheduler.h
         src/Scheduler/ParallelScheduler.cpp src/Scheduler/ParallelScheduler.h src/Client/Client.cpp src/Client/Client.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

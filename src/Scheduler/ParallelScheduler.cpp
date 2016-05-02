@@ -3,8 +3,8 @@
 
 using namespace boost::interprocess;
 
-ParallelScheduler::ParallelScheduler(std::string queue_name, std::string filename) :
-        Scheduler(filename), filename{filename}, queue_name{queue_name} {
+ParallelScheduler::ParallelScheduler(std::string queue_name, std::string filename, int ncores) :
+        Scheduler{filename, ncores}, filename{filename}, queue_name{queue_name} {
 
 }
 
@@ -12,30 +12,30 @@ ParallelScheduler::~ParallelScheduler() {
 
 }
 
-int ParallelScheduler::get_unloaded_core(const double cores_load[4]) {
-    int tmp=-1;
-    #pragma omp parallel for shared(cores_load) reduction(min : tmp)
-    for(unsigned i = 0; i < 4; ++i)
-        if(cores_load[i] == 0) tmp=i;
+int ParallelScheduler::get_unloaded_core(const std::vector<double> &cores_load) {
+    int tmp = -1;
+#pragma omp parallel for shared(cores_load) reduction(min : tmp)
+    for (unsigned i = 0; i < cores_load.size(); ++i)
+        if (cores_load[i] == 0) tmp = i;
     return tmp;
 }
 
-int ParallelScheduler::get_less_loaded_core(const double cores_load[4]) {
+int ParallelScheduler::get_less_loaded_core(const std::vector<double> &cores_load) {
     int index = 0;
     double min = cores_load[0];
 
-    #pragma omp parallel shared(cores_load)
+#pragma omp parallel shared(cores_load)
     {
         int index_local = index;
         double min_local = min;
-        #pragma omp for nowait
-        for (int i = 1; i < 4; i++) {
+#pragma omp for nowait
+        for (unsigned i = 1; i < cores_load.size(); i++) {
             if (cores_load[i] < min_local) {
                 min_local = cores_load[i];
                 index_local = i;
             }
         }
-        #pragma omp critical
+#pragma omp critical
         {
             if (min_local < min) {
                 min = min_local;
@@ -46,25 +46,25 @@ int ParallelScheduler::get_less_loaded_core(const double cores_load[4]) {
     return index;
 }
 
-bool ParallelScheduler::exist_suitable_core(const double cores_load[4], double task_load) {
+bool ParallelScheduler::exist_suitable_core(const std::vector<double> &cores_load, double task_load) {
     bool tmp = false;
-    #pragma omp parallel for reduction(|:tmp) shared(cores_load)
-    for(unsigned i = 0; i < 4; ++i) {
-        if (cores_load[i]+task_load <= 1.0){
-            tmp=true;
+#pragma omp parallel for reduction(|:tmp) shared(cores_load)
+    for (unsigned i = 0; i < cores_load.size(); ++i) {
+        if (cores_load[i] + task_load <= 1.0) {
+            tmp = true;
         }
     }
     return tmp;
 }
 
-void ParallelScheduler::get_cores_load(const VectorTasks &process_list, double cores_load[4]) {
+void ParallelScheduler::get_cores_load(const VectorTasks &process_list, std::vector<double> &cores_load) {
     for (auto const &process : process_list)
         cores_load[process.num_cpu] += process.load;
 }
 
 int ParallelScheduler::get_core_to_assign(const VectorTasks &process_list, double task_load) {
     int core = -1;
-    double cores_load[4] = {0, 0, 0, 0};
+    initCores();
 
     get_cores_load(process_list, cores_load);
     print_cores_load(file_logs, cores_load);
@@ -85,7 +85,7 @@ int ParallelScheduler::get_core_to_assign(const VectorTasks &process_list, doubl
 
 void ParallelScheduler::start() {
 
-    std::cout << "Launching scheduler in sequential mode..." << std::endl;
+    std::cout << "Launching scheduler in parallel mode..." << std::endl;
 
     /* Variables */
     pid_t pid;
@@ -195,9 +195,9 @@ void ParallelScheduler::start() {
                     if (exec == 0) {
                         setpgid(getpid(), getpid());
                         std::system(command.c_str());
-                        // Tell how good was that ephemeral life...
                         boost::posix_time::time_duration duration =
                                 boost::posix_time::second_clock::local_time() - start;
+                        // Tell how good was that ephemeral life...
                         {
                             scoped_lock<file_lock> fs_lock(f_lock);
                             print_process_handled(file_logs, _task, getppid(), core, duration.total_milliseconds());

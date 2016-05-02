@@ -149,7 +149,7 @@ void Client::start() {
             std::cout << "--- CLIENT ---" << std::endl;
             std::cout << "1: Send 1 process" << std::endl;
             std::cout << "2: Send 3 processes with random attributes" << std::endl;
-            std::cout << "3: Send processes from a json file" << std::endl;
+            std::cout << "3: Send processes from a JSON file" << std::endl;
             std::cout << "4: stop client" << std::endl;
             std::cin >> choice;
             try {

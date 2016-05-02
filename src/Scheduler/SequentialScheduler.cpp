@@ -2,8 +2,9 @@
 
 using namespace boost::interprocess;
 
-SequentialScheduler::SequentialScheduler(const std::string &queue_name, const std::string &filename) :
-        Scheduler(filename), filename{filename}, queue_name{queue_name} {
+
+SequentialScheduler::SequentialScheduler(const std::string &queue_name, const std::string &filename, int ncores) :
+        Scheduler{filename, ncores}, filename{filename}, queue_name{queue_name} {
 
 }
 
@@ -12,21 +13,21 @@ SequentialScheduler::~SequentialScheduler() {
 }
 
 
-int SequentialScheduler::get_unloaded_core(const double cores_load[4]) {
-    for (unsigned i = 0; i < 4; ++i)
+int SequentialScheduler::get_unloaded_core(const std::vector<double> &cores_load) {
+    for (unsigned i = 0; i < cores_load.size(); ++i)
         if (cores_load[i] == 0) return i;
     return -1;
 }
 
-int SequentialScheduler::get_less_loaded_core(const double cores_load[4]) {
+int SequentialScheduler::get_less_loaded_core(const std::vector<double> &cores_load) {
     int min = 0;
-    for (unsigned i = 0; i < 4; ++i)
+    for (unsigned i = 0; i < cores_load.size(); ++i)
         if (cores_load[i] < cores_load[min]) min = i;
     return min;
 }
 
-bool SequentialScheduler::exist_suitable_core(const double cores_load[4], double task_load) {
-    for (unsigned i = 0; i < 4; ++i) {
+bool SequentialScheduler::exist_suitable_core(const std::vector<double> &cores_load, double task_load) {
+    for (unsigned i = 0; i < cores_load.size(); ++i) {
         if (cores_load[i] + task_load <= 1.0) {
             return true;
         }
@@ -34,14 +35,14 @@ bool SequentialScheduler::exist_suitable_core(const double cores_load[4], double
     return false;
 }
 
-void SequentialScheduler::get_cores_load(const VectorTasks &process_list, double* cores_load) {
+void SequentialScheduler::get_cores_load(const VectorTasks &process_list, std::vector<double> &cores_load) {
     for (auto const &process : process_list)
         cores_load[process.num_cpu] += process.load;
 }
 
 int SequentialScheduler::get_core_to_assign(const VectorTasks &process_list, double task_load) {
     int core = -1;
-    double cores_load[4] = {0, 0, 0, 0};
+    initCores();
 
     get_cores_load(process_list, cores_load);
     print_cores_load(file_logs, cores_load);

@@ -8,13 +8,20 @@
 
 class Scheduler {
 
+private:
+    int ncores;
+
 protected:
     std::fstream file_logs;
+    std::vector<double> cores_load;
+
+    void initCores();
 
     virtual void start() = 0;
 
+
 public:
-    Scheduler(std::string);
+    Scheduler(std::string, int);
 
     virtual ~Scheduler();
 
