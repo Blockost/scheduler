@@ -1,0 +1,27 @@
+{
+  "0" :{
+    "command":"sleep 3 && echo \"This is a command\"",
+    "timeout":10,
+    "priority":3
+  },
+  "1":{
+    "command":"sleep 3 && echo \"This is a command\"",
+    "load":0.5,
+    "priority":1
+  },
+  "2" :{
+    "command":"sleep 3 && echo \"This is a command\"",
+    "timeout":1,
+    "load":0.7,
+    "priority":2
+  },
+  "3" :{
+    "command":"sleep 3 && echo \"This is a command\""
+  },
+  "4" :{
+    "command":"sleep 3 && echo \"This is a command\"",
+    "timeout":2,
+    "load":0.98,
+    "priority":3
+  }
+}

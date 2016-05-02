@@ -1,3 +1,12 @@
+/*!
+\file       flags.h
+\author     Simon ESPIGOLÉ - Teddy GILBERT - Hugo LEGRAND
+\version    0.1
+\date       01/04/2016
+\brief      Flags declaration
+\remarks    none
+*/
+
 #ifndef PROJETGSI_FLAGS_H
 #define PROJETGSI_FLAGS_H
 
