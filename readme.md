@@ -33,16 +33,16 @@ Use -s or --sequential to start the scheduler in sequential mode. Use -p or --pa
 
 ### Algorithm
 
-    TANT QUE non timeout FAIRE
-        -- Une nouvelle tâche arrive
-        SI aucun processeur ne peut contenir la tâche
-            Attendre qu'un processeur se libère
-        SINON
-            SI un processeur est vide (pas de tâches en cours)
-                lui attribuer automatiquement la tâche.
-            SINON
-                Récupérer le processeur le moins utilisé
-                Lui assigner la tâche
-            FINSI
-        FINSI
-    FIN TQ
+    WHILE timer not expired DO
+        -- New task incoming...
+        IF no processor can handle it (processors would be overloaded)
+            Wait for a processor to unload
+        ELSE
+            IF one processor is empty (no task running)
+                Attach the task to it
+            ELSE
+                Get the less-loaded processor
+                Attach task to it
+            END
+        END
+    END
